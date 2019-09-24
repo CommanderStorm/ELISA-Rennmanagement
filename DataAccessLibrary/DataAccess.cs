@@ -1087,8 +1087,9 @@ namespace DataAccessLibrary
         {
             const string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY verein order by count(verein) DESC, verein ASC";
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC";
             var vereine = new ObservableCollection<Verein>();
+            Debug.WriteLine(GetAllVereineDataQuery);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())
@@ -1099,15 +1100,17 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            var vereintmp = new Verein
-                            {
-                                Vereinsname = reader.GetString(0),
-                                AnzahlBoote = reader.GetInt32(1),
-                                BisherGesammtBezahlt = reader.GetDecimal(2),
-                                GesammtZuZahlen = reader.GetDecimal(3),
-                                Total = reader.GetDecimal(4)
-                            };
+                            Verein vereintmp = new Verein();
+                            vereintmp.Vereinsname = reader.GetString(0);
+                            vereintmp.AnzahlBoote = reader.GetInt32(1);
+                            vereintmp.BisherGesammtBezahlt = reader.GetDecimal(2);
+                            vereintmp.GesammtZuZahlen = reader.GetDecimal(3);
+                            vereintmp.Total = reader.GetDecimal(4);
+                            vereintmp.Imp_BoolBezahlt = vereintmp.BisherGesammtBezahlt >= vereintmp.GesammtZuZahlen;
+                            vereintmp.BoolBezahlt = vereintmp.Imp_BoolBezahlt;
+                        
                             vereintmp.VereinsBoote = GetBooteByVereinVereinssuche(vereintmp.Vereinsname);
+
                             vereine.Add(vereintmp);
                         }
                     }
@@ -1129,6 +1132,7 @@ namespace DataAccessLibrary
             {
                 GetAllVereineDataQuery += " WHERE sum(zuZahlen) > sum(bezahlt);";
             }
+            Debug.WriteLine(GetAllVereineDataQuery);
             var vereine = new ObservableCollection<Verein>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -1140,15 +1144,17 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            var vereintmp = new Verein
-                            {
-                                Vereinsname = reader.GetString(0),
-                                AnzahlBoote = reader.GetInt32(1),
-                                BisherGesammtBezahlt = reader.GetDecimal(2),
-                                GesammtZuZahlen = reader.GetDecimal(3),
-                                Total = reader.GetDecimal(4)
-                            };
+                            Verein vereintmp = new Verein();
+                            vereintmp.Vereinsname = reader.GetString(0);
+                            vereintmp.AnzahlBoote = reader.GetInt32(1);
+                            vereintmp.BisherGesammtBezahlt = reader.GetDecimal(2);
+                            vereintmp.GesammtZuZahlen = reader.GetDecimal(3);
+                            vereintmp.Total = reader.GetDecimal(4);
+                            vereintmp.Imp_BoolBezahlt = vereintmp.BisherGesammtBezahlt >= vereintmp.GesammtZuZahlen;
+                            vereintmp.BoolBezahlt = vereintmp.Imp_BoolBezahlt;
+
                             vereintmp.VereinsBoote = GetBooteByVereinVereinssuche(vereintmp.Vereinsname);
+
                             vereine.Add(vereintmp);
                         }
                     }
@@ -1157,8 +1163,44 @@ namespace DataAccessLibrary
             return vereine;
         }
 
-
         internal static void UpdateBootsImport(string zeilenName, object updateWert, int BootsID)
+        {
+
+            string UpdateOneBoatData =
+                "UPDATE ProtoBoote "
+                + "SET '" + zeilenName + "' = '" + updateWert.ToString()
+                + "' WHERE BootsID = '" + BootsID.ToString() + "';";
+            Debug.WriteLine(UpdateOneBoatData);
+            using (SqliteConnection db =
+                new SqliteConnection(sqliteConnectionString))
+            {
+                db.Open();
+                using (SqliteCommand CreateBooteCommand = new SqliteCommand(UpdateOneBoatData, db))
+                {
+                    CreateBooteCommand.ExecuteReader();
+                }
+            }
+        }
+
+        internal static void UpdateBootsBezahlstatus(ObservableCollection<Boot> vereinsBoote, bool boolBezahlt)
+        {
+            if (boolBezahlt)
+            {
+                foreach (Boot _tmp in vereinsBoote)
+                {
+                    UpdateBoot("Bezahlt", _tmp.ZuZahlen, _tmp.BootsID);
+                }
+            }
+            else
+            {
+                foreach (Boot _tmp in vereinsBoote)
+                {
+                    UpdateBoot("Bezahlt", 0, _tmp.BootsID);
+                }
+            }
+        }
+
+        internal static void UpdateBoot(string zeilenName, object updateWert, int BootsID)
         {
             string UpdateOneBoatData = "UPDATE Boote "
                 + "SET '" + zeilenName + "' = '" + updateWert.ToString()

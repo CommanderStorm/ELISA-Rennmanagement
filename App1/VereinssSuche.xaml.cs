@@ -24,7 +24,7 @@ namespace App1
             dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche(true);
         }
 
-        private void FilternichtBezahlt_Click(object sender, RoutedEventArgs e)
+        private void FilternichtBezahlt_Click(object _, RoutedEventArgs _1)
         {
             dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche(false);
         }
