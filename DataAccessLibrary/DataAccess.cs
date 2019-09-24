@@ -256,13 +256,43 @@ namespace DataAccessLibrary
         public string Athlet8 { get; set; }
         public decimal Bezahlt { get; set; }
         public decimal ZuZahlen { get; set; }
+        public string Meldername { get; set; }
+        public string Melderadresse { get; set; }
+        public string Melderort { get; set; }
+        public string Melderverein { get; set; }
+        public string Melderemail { get; set; }
+        public string Meldertel { get; set; }
+        public string Melderfax { get; set; }
+        public string RennID { get; set; }
+        public bool BoolBezahlt
+        {
+            get => Imp_BoolBezahlt;
+            set
+            {
+                if (Imp_BoolBezahlt != value)
+                {
+                    Imp_BoolBezahlt = value;
+                    if (value)
+                    {
+                        DataAccess.UpdateBoot("Bezahlt", this.ZuZahlen, this.BootsID);
+                    }
+                    else
+                    {
+                        DataAccess.UpdateBoot("Bezahlt", 0, this.BootsID);
+                    }
+                }
+            }
+        }
+        public bool Imp_BoolBezahlt { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Codequalität", "IDE0051:Nicht verwendete private Member entfernen", Justification = "<Ausstehend>")]
+
+#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
     }
 
     public class Verein : INotifyPropertyChanged
@@ -273,13 +303,28 @@ namespace DataAccessLibrary
         public decimal GesammtZuZahlen { get; set; }
         public decimal Total { get; set; }
         public ObservableCollection<Boot> VereinsBoote { get; set; }
+        public bool BoolBezahlt
+        {
+            get => Imp_BoolBezahlt;
+            set
+            {
+                if (Imp_BoolBezahlt != value)
+                {
+                    Imp_BoolBezahlt = value;
+                    DataAccess.UpdateBootsBezahlstatus(VereinsBoote, value);
+                }
+            }
+        }
+        public bool Imp_BoolBezahlt { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Codequalität", "IDE0051:Nicht verwendete private Member entfernen", Justification = "<Ausstehend>")]
+
+#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
     }
 
     public static class DataAccess
@@ -293,8 +338,9 @@ namespace DataAccessLibrary
             {
                 db.Open();
                 String CreateBoote = "CREATE TABLE IF NOT EXISTS Boote (BootsID INTEGER, Abteilung INTEGER, Startnummer INTEGER, "
-                        + "Rennbezeichnung TEXT, Verein TEXT, Steuerling TEXT, Athlet1 TEXT, Athlet2 TEXT, "
-                        + "Athlet3 TEXT, Athlet4 TEXT, Athlet5 TEXT, Athlet6 TEXT, Athlet7 TEXT, Athlet8 TEXT, "
+                        + "Rennbezeichnung TEXT, RennID TEXT, Verein TEXT, Steuerling TEXT, Athlet1 TEXT, Athlet2 TEXT, "
+                        + "Athlet3 TEXT, Athlet4 TEXT, Athlet5 TEXT, Athlet6 TEXT, Athlet7 TEXT, Athlet8 TEXT, Meldername TEXT, "
+                        + "Melderadresse TEXT, Melderort TEXT, Melderverein TEXT, Melderemail TEXT, Meldertel TEXT, Melderfax TEXT, "
                         + "Bezahlt REAL, ZuZahlen REAL);";
                 using (SqliteCommand CreateBooteCommand = new SqliteCommand(CreateBoote, db))
                 {
@@ -568,6 +614,7 @@ namespace DataAccessLibrary
             string _Bootstyp = temprennen.Bootstyp;
             string _Rennbezeichnung = temprennen.Rennbezeichnung + Rennbezeichnung;
             decimal _ZuZahlen = temprennen.ZuZahlen;
+            /*
             Debug.WriteLine("BootID: " + BootsID);
             Debug.WriteLine("Bootstyp: " + _Bootstyp);
             Debug.WriteLine("Rennbezeichnung: " + _Rennbezeichnung);
@@ -591,6 +638,7 @@ namespace DataAccessLibrary
             Debug.WriteLine("Meldertel: " + Meldertel);
             Debug.WriteLine("Melderfax: " + Melderfax);
             Debug.WriteLine("Kommentare: " + Kommentare);
+            */
             using (SqliteConnection db = new SqliteConnection(sqliteConnectionString))
             {
                 db.Open();
@@ -931,9 +979,11 @@ namespace DataAccessLibrary
 
         public static ObservableCollection<Boot> GetBooteBootssuche()
         {
-            const string GetAllBoatDataQuery = "select abteilung, startnummer, Rennbezeichnung, "
-                        + "verein, steuerling, athlet1, athlet2, athlet3, athlet4, athlet5, "
-                        + "athlet6, athlet7, athlet8, bezahlt, zuZahlen from ProtoBoote;";
+            const string GetAllBoatDataQuery = "select BootsID, Abteilung, Startnummer, "
+                        + "Rennbezeichnung, RennID, Verein, Steuerling, Athlet1, Athlet2, "
+                        + "Athlet3, Athlet4, Athlet5, Athlet6, Athlet7, Athlet8, Meldername, "
+                        + "Melderadresse, Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
+                        + "Bezahlt, ZuZahlen from Boote;";
             var boote = new ObservableCollection<Boot>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -945,23 +995,32 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            var boot = new Boot
+                            Boot boot = new Boot
                             {
-                                Abteilung = reader.GetInt32(0),
-                                Startnummer = reader.GetInt32(1),
-                                Rennbezeichnung = reader.GetString(2),
-                                Verein = reader.GetString(3),
-                                Steuerling = reader.GetString(4),
-                                Athlet1 = reader.GetString(5),
-                                Athlet2 = reader.GetString(6),
-                                Athlet3 = reader.GetString(7),
-                                Athlet4 = reader.GetString(8),
-                                Athlet5 = reader.GetString(9),
-                                Athlet6 = reader.GetString(10),
-                                Athlet7 = reader.GetString(11),
-                                Athlet8 = reader.GetString(12),
-                                Bezahlt = reader.GetDecimal(13),
-                                ZuZahlen = reader.GetDecimal(14)
+                                BootsID = reader.GetInt32(0),
+                                Abteilung = reader.GetInt32(1),
+                                Startnummer = reader.GetInt32(2),
+                                Rennbezeichnung = reader.GetString(3),
+                                RennID = reader.GetString(4),
+                                Verein = reader.GetString(5),
+                                Steuerling = reader.GetString(6),
+                                Athlet1 = reader.GetString(7),
+                                Athlet2 = reader.GetString(8),
+                                Athlet3 = reader.GetString(9),
+                                Athlet4 = reader.GetString(10),
+                                Athlet5 = reader.GetString(11),
+                                Athlet6 = reader.GetString(12),
+                                Athlet7 = reader.GetString(13),
+                                Athlet8 = reader.GetString(14),
+                                Meldername = reader.GetString(15),
+                                Melderadresse = reader.GetString(16),
+                                Melderort = reader.GetString(17),
+                                Melderverein = reader.GetString(18),
+                                Melderemail = reader.GetString(19),
+                                Meldertel = reader.GetString(20),
+                                Melderfax = reader.GetString(21),
+                                Bezahlt = reader.GetDecimal(22),
+                                ZuZahlen = reader.GetDecimal(23)
                             };
                             boote.Add(boot);
                         }
@@ -973,9 +1032,11 @@ namespace DataAccessLibrary
 
         public static ObservableCollection<Boot> GetBooteByVereinVereinssuche(string verein)
         {
-            string GetAllBoatDataQuery = "select abteilung, startnummer, Rennbezeichnung, verein, steuerling, "
-                        + "athlet1, athlet2, athlet3, athlet4, athlet5, athlet6, athlet7, athlet8, "
-                        + "bezahlt, zuZahlen from Boote where verein = '" + verein + "';";
+            string GetAllBoatDataQuery = "select BootsID, Abteilung, Startnummer, "
+                        + "Rennbezeichnung, RennID, Verein, Steuerling, Athlet1, Athlet2, "
+                        + "Athlet3, Athlet4, Athlet5, Athlet6, Athlet7, Athlet8, Meldername, "
+                        + "Melderadresse, Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
+                        + "Bezahlt, ZuZahlen from Boote where verein = '" + verein + "';";
             var boote = new ObservableCollection<Boot>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -987,23 +1048,32 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            var boot = new Boot
+                            Boot boot = new Boot
                             {
-                                Abteilung = reader.GetInt32(0),
-                                Startnummer = reader.GetInt32(1),
-                                Rennbezeichnung = reader.GetString(2),
-                                Verein = reader.GetString(3),
-                                Steuerling = reader.GetString(4),
-                                Athlet1 = reader.GetString(5),
-                                Athlet2 = reader.GetString(6),
-                                Athlet3 = reader.GetString(7),
-                                Athlet4 = reader.GetString(8),
-                                Athlet5 = reader.GetString(9),
-                                Athlet6 = reader.GetString(10),
-                                Athlet7 = reader.GetString(11),
-                                Athlet8 = reader.GetString(12),
-                                Bezahlt = reader.GetDecimal(13),
-                                ZuZahlen = reader.GetDecimal(14)
+                                BootsID = reader.GetInt32(0),
+                                Abteilung = reader.GetInt32(1),
+                                Startnummer = reader.GetInt32(2),
+                                Rennbezeichnung = reader.GetString(3),
+                                RennID = reader.GetString(4),
+                                Verein = reader.GetString(5),
+                                Steuerling = reader.GetString(6),
+                                Athlet1 = reader.GetString(7),
+                                Athlet2 = reader.GetString(8),
+                                Athlet3 = reader.GetString(9),
+                                Athlet4 = reader.GetString(10),
+                                Athlet5 = reader.GetString(11),
+                                Athlet6 = reader.GetString(12),
+                                Athlet7 = reader.GetString(13),
+                                Athlet8 = reader.GetString(14),
+                                Meldername = reader.GetString(15),
+                                Melderadresse = reader.GetString(16),
+                                Melderort = reader.GetString(17),
+                                Melderverein = reader.GetString(18),
+                                Melderemail = reader.GetString(19),
+                                Meldertel = reader.GetString(20),
+                                Melderfax = reader.GetString(21),
+                                Bezahlt = reader.GetDecimal(22),
+                                ZuZahlen = reader.GetDecimal(23)
                             };
                             boote.Add(boot);
                         }
@@ -1017,7 +1087,7 @@ namespace DataAccessLibrary
         {
             const string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC;";
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY verein order by count(verein) DESC, verein ASC";
             var vereine = new ObservableCollection<Verein>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -1046,51 +1116,46 @@ namespace DataAccessLibrary
             return vereine;
         }
 
-        public static ObservableCollection<Verein> GetVereineVereinssuche(bool hatBezahlt)
-        {
-            string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
-                        + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC";
-            if (hatBezahlt)
-            {
-                GetAllVereineDataQuery += " WHERE sum(bezahlt) >= sum(zuZahlen);";
-            }
-            else
-            {
-                GetAllVereineDataQuery += " WHERE sum(zuZahlen) > sum(bezahlt);";
-            }
-            var vereine = new ObservableCollection<Verein>();
-            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
-            {
-                using (SqliteCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = GetAllVereineDataQuery;
-                    conn.Open();
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var vereintmp = new Verein
-                            {
-                                Vereinsname = reader.GetString(0),
-                                AnzahlBoote = reader.GetInt32(1),
-                                BisherGesammtBezahlt = reader.GetDecimal(2),
-                                GesammtZuZahlen = reader.GetDecimal(3),
-                                Total = reader.GetDecimal(4)
-                            };
-                            vereintmp.VereinsBoote = GetBooteByVereinVereinssuche(vereintmp.Vereinsname);
-                            vereine.Add(vereintmp);
-                        }
-                    }
-                }
-            }
-            return vereine;
-        }
         internal static void UpdateBootsImport(string zeilenName, object updateWert, int BootsID)
         {
 
             string UpdateOneBoatData =
                 "UPDATE ProtoBoote "
+                + "SET '" + zeilenName + "' = '" + updateWert.ToString()
+                + "' WHERE BootsID = '" + BootsID.ToString() + "';";
+            Debug.WriteLine(UpdateOneBoatData);
+            using (SqliteConnection db =
+                new SqliteConnection(sqliteConnectionString))
+            {
+                db.Open();
+                using (SqliteCommand CreateBooteCommand = new SqliteCommand(UpdateOneBoatData, db))
+                {
+                    CreateBooteCommand.ExecuteReader();
+                }
+            }
+        }
+
+        internal static void UpdateBootsBezahlstatus(ObservableCollection<Boot> vereinsBoote, bool boolBezahlt)
+        {
+            if (boolBezahlt)
+            {
+                foreach (Boot _tmp in vereinsBoote)
+                {
+                    UpdateBoot("Bezahlt", _tmp.ZuZahlen, _tmp.BootsID);
+                }
+            }
+            else
+            {
+                foreach (Boot _tmp in vereinsBoote)
+                {
+                    UpdateBoot("Bezahlt", 0, _tmp.BootsID);
+                }
+            }
+        }
+
+        internal static void UpdateBoot(string zeilenName, object updateWert, int BootsID)
+        {
+            string UpdateOneBoatData = "UPDATE Boote "
                 + "SET '" + zeilenName + "' = '" + updateWert.ToString()
                 + "' WHERE BootsID = '" + BootsID.ToString() + "';";
             Debug.WriteLine(UpdateOneBoatData);
