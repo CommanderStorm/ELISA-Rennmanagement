@@ -1,9 +1,10 @@
 ﻿using DataAccessLibrary;
 using System;
 using System.Collections.ObjectModel;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-// Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
+
 
 namespace App1
 {
@@ -12,21 +13,34 @@ namespace App1
     /// </summary>
     public sealed partial class VereinssSuche : Page
     {
-        private ObservableCollection<Verein> vereinsanzeige = new ObservableCollection<Verein>();
-
         public VereinssSuche()
         {
             this.InitializeComponent();
-            vereinsanzeige = DataAccess.GetVereineVereinssuche();
-            Vereeinssearchlisting.ItemsSource = vereinsanzeige;
+            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche();
         }
+
+        private void FilterBezahlt_Click(object _, RoutedEventArgs _1)
+        {
+            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche(true);
+        }
+
+        private void FilternichtBezahlt_Click(object sender, RoutedEventArgs e)
+        {
+            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche(false);
+        }
+
+        private void ClearFilter_Click(object _, RoutedEventArgs _1)
+        {
+            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche();
+        }
+
 
         private void Searchbox_TextChanged(object _, TextChangedEventArgs _1)
         {
             String searchstring = searchbox.Text.ToLower();
             if (searchstring == "")
             {
-                vereinsanzeige = DataAccess.GetVereineVereinssuche();
+                dataGrid.ItemsSource = DataAccess.GetVereineVereinssuche();
             }
             else
             {
@@ -38,18 +52,9 @@ namespace App1
                         vereinsanzeige_neu.Add(verein_under_search_Review);
                     }
                 }
-                vereinsanzeige = vereinsanzeige_neu;
+                dataGrid.ItemsSource = vereinsanzeige_neu;
             }
-            Vereeinssearchlisting.ItemsSource = vereinsanzeige;
         }
 
-        private void Vereeinssearchlisting_SelectionChanged(object _, SelectionChangedEventArgs _1)
-        {
-            //object vereintmp = Vereeinssearchlisting.SelectedItems.GetType();
-            //Vereinsbootslisting.ItemsSource = DataAccess.GetBooteByVereinVereinssuche(vereintmp.verein);
-            //searchbox.Text = vereintmp.ToString();
-            //Verein tp = (Verein)Vereeinssearchlisting.SelectedItems;
-            //Vereinsbootslisting.ItemsSource = tp.vereinsBoote;
-        }
     }
 }

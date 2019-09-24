@@ -90,7 +90,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Bearbeitung: Athletendaten" VerticalAlignment="Center"  Style="{ThemeResource SubtitleTextBlockStyle}" FocusVisualPrimaryBrush="White" Foreground="White" HorizontalAlignment="Left"></TextBlock>
+                <TextBlock Grid.Column="0" Text="Suche: Bootsaufschlüsselung" VerticalAlignment="Center"  Style="{ThemeResource SubtitleTextBlockStyle}" FocusVisualPrimaryBrush="White" Foreground="White" HorizontalAlignment="Left"></TextBlock>
                 <TextBox Grid.Column="1" Background="#E5FFFFFF"  x:Name="searchbox" PlaceholderText="Suche nach Startnummer, Verein, Steuermann/frau, oder Athlet/in" Margin="20,0"
                      Visibility="Visible" Foreground="White" FocusVisualPrimaryBrush="White" FontFamily="Segoe UI" FocusVisualSecondaryBrush="#99FFFFFF" Height="40" VerticalAlignment="Center" AcceptsReturn="False" TextChanged="Searchbox_TextChanged" Width="Auto" FontSize="18"/>
                 <AppBarButton Grid.Column="2" Icon="Filter" Label="Filter" Width="Auto" HorizontalAlignment="Right" Foreground="White">
