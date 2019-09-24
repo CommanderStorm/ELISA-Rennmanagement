@@ -1,0 +1,19 @@
+﻿<Page
+    x:Class="App1.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Rectangle HorizontalAlignment="Stretch" Fill="#FF003666" VerticalAlignment="Bottom" Margin="-12,0,-12,0" Height="300"/>
+        <ToggleButton x:Name="Bezahlt_Button" Content="Leider noch keine Einstelungen Verfügbar" Margin="25,20,20,20" Height="150" FontWeight="Bold" FontFamily="Segoe UI Black" FontSize="36" Foreground="White" FocusVisualSecondaryBrush="#FFD10000" RequestedTheme="Light" Background="#FF2AF63B" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+            <ToggleButton.FocusVisualPrimaryBrush>
+                <SolidColorBrush Color="#FFD10000"/>
+            </ToggleButton.FocusVisualPrimaryBrush>
+        </ToggleButton>
+    </Grid>
+</Page>
