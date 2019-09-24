@@ -1017,7 +1017,7 @@ namespace DataAccessLibrary
         {
             const string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC";
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC;";
             var vereine = new ObservableCollection<Verein>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -1046,6 +1046,46 @@ namespace DataAccessLibrary
             return vereine;
         }
 
+        public static ObservableCollection<Verein> GetVereineVereinssuche(bool hatBezahlt)
+        {
+            string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
+                        + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC";
+            if (hatBezahlt)
+            {
+                GetAllVereineDataQuery += " WHERE sum(bezahlt) >= sum(zuZahlen);";
+            }
+            else
+            {
+                GetAllVereineDataQuery += " WHERE sum(zuZahlen) > sum(bezahlt);";
+            }
+            var vereine = new ObservableCollection<Verein>();
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = GetAllVereineDataQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var vereintmp = new Verein
+                            {
+                                Vereinsname = reader.GetString(0),
+                                AnzahlBoote = reader.GetInt32(1),
+                                BisherGesammtBezahlt = reader.GetDecimal(2),
+                                GesammtZuZahlen = reader.GetDecimal(3),
+                                Total = reader.GetDecimal(4)
+                            };
+                            vereintmp.VereinsBoote = GetBooteByVereinVereinssuche(vereintmp.Vereinsname);
+                            vereine.Add(vereintmp);
+                        }
+                    }
+                }
+            }
+            return vereine;
+        }
         internal static void UpdateBootsImport(string zeilenName, object updateWert, int BootsID)
         {
 
