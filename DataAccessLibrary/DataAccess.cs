@@ -1116,44 +1116,49 @@ namespace DataAccessLibrary
             return vereine;
         }
 
-        internal static void UpdateBootsImport(string zeilenName, object updateWert, int BootsID)
+        public static ObservableCollection<Verein> GetVereineVereinssuche(bool hatBezahlt)
         {
-
-            string UpdateOneBoatData =
-                "UPDATE ProtoBoote "
-                + "SET '" + zeilenName + "' = '" + updateWert.ToString()
-                + "' WHERE BootsID = '" + BootsID.ToString() + "';";
-            Debug.WriteLine(UpdateOneBoatData);
-            using (SqliteConnection db =
-                new SqliteConnection(sqliteConnectionString))
+            string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
+                        + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC";
+            if (hatBezahlt)
             {
-                db.Open();
-                using (SqliteCommand CreateBooteCommand = new SqliteCommand(UpdateOneBoatData, db))
-                {
-                    CreateBooteCommand.ExecuteReader();
-                }
-            }
-        }
-
-        internal static void UpdateBootsBezahlstatus(ObservableCollection<Boot> vereinsBoote, bool boolBezahlt)
-        {
-            if (boolBezahlt)
-            {
-                foreach (Boot _tmp in vereinsBoote)
-                {
-                    UpdateBoot("Bezahlt", _tmp.ZuZahlen, _tmp.BootsID);
-                }
+                GetAllVereineDataQuery += " WHERE sum(bezahlt) >= sum(zuZahlen);";
             }
             else
             {
-                foreach (Boot _tmp in vereinsBoote)
+                GetAllVereineDataQuery += " WHERE sum(zuZahlen) > sum(bezahlt);";
+            }
+            var vereine = new ObservableCollection<Verein>();
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
                 {
-                    UpdateBoot("Bezahlt", 0, _tmp.BootsID);
+                    cmd.CommandText = GetAllVereineDataQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var vereintmp = new Verein
+                            {
+                                Vereinsname = reader.GetString(0),
+                                AnzahlBoote = reader.GetInt32(1),
+                                BisherGesammtBezahlt = reader.GetDecimal(2),
+                                GesammtZuZahlen = reader.GetDecimal(3),
+                                Total = reader.GetDecimal(4)
+                            };
+                            vereintmp.VereinsBoote = GetBooteByVereinVereinssuche(vereintmp.Vereinsname);
+                            vereine.Add(vereintmp);
+                        }
+                    }
                 }
             }
+            return vereine;
         }
 
-        internal static void UpdateBoot(string zeilenName, object updateWert, int BootsID)
+
+        internal static void UpdateBootsImport(string zeilenName, object updateWert, int BootsID)
         {
             string UpdateOneBoatData = "UPDATE Boote "
                 + "SET '" + zeilenName + "' = '" + updateWert.ToString()
