@@ -14,7 +14,7 @@
         </StackPanel>
         <Grid>
             <Grid.Resources>
-                <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:BootsImport">
+                <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:Abteilung">
                     <StackPanel>
                         <TextBlock Margin="20" Text="Hier sind die Details für den Ausgewählten Lauf Boot:" />
                     </StackPanel>
@@ -99,7 +99,7 @@
                     <controls:DataGridTextColumn Header="Abteilung" Binding="{Binding Abteilung}" Tag="Abteilung" />
                     <controls:DataGridTextColumn Header="RennID" Binding="{Binding RennID}" Tag="RennID" />
                     <controls:DataGridTextColumn Header="Rennbezeichnung" Binding="{Binding Rennbezeichnung}" Tag="Rennbezeichnung" />
-                    <controls:DataGridTextColumn Header="Anzahl an Startern" Binding="{Binding Verein}" Tag="Verein" />
+                    <controls:DataGridTextColumn Header="Anzahl an Startern" Binding="{Binding AnzahlBoote}" Tag="AnzahlBoote" />
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
             <Viewbox/>

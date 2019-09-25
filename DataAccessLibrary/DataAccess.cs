@@ -237,6 +237,14 @@ namespace DataAccessLibrary
         public string Bootstyp { get; set; }
     }
 
+    public class Abteilung
+    {
+        public string RennID { get; set; }
+        public string Rennbezeichnung { get; set; }
+        public string Bootstyp { get; set; }
+        public int AnzahlBoote { get; set; }
+    }
+
     public class Boot : INotifyPropertyChanged
     {
         public int BootsID { get; set; }
