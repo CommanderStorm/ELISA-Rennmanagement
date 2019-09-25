@@ -16,7 +16,7 @@
             <Grid.Resources>
                 <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:BootsImport">
                     <StackPanel>
-                        <TextBlock Margin="20" Text="Hier sind die Details für das Ausgewählte Boot:" />
+                        <TextBlock Margin="20" Text="Hier sind die Details für das ausgewählte Boot:" />
                         <Grid Margin="20,10" Padding="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -134,7 +134,7 @@
                     <controls:DataGridTextColumn Header="Startnummer" Binding="{Binding Startnummer}" Tag="Startnummer" />
                     <controls:DataGridTextColumn Header="Rennbezeichnung" Binding="{Binding Rennbezeichnung}" Tag="Rennbezeichnung" />
                     <controls:DataGridTextColumn Header="Verein" Binding="{Binding Verein}" Tag="Verein" />
-                    <controls:DataGridTextColumn Header="Steuerling" Binding="{Binding Steuerling}" Tag="Steuerling" />
+                    <controls:DataGridTextColumn Header="Steuermann/-frau" Binding="{Binding Steuerling}" Tag="Steuerling" />
                     <controls:DataGridTextColumn Header="Athlet 8" Binding="{Binding Athlet8}" Tag="Athlet8"/>
                     <controls:DataGridTextColumn Header="Athlet 7" Binding="{Binding Athlet7}" Tag="Athlet7" />
                     <controls:DataGridTextColumn Header="Athlet 6" Binding="{Binding Athlet6}" Tag="Athlet6" />

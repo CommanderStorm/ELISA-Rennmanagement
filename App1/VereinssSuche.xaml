@@ -41,10 +41,10 @@
                 <AppBarButton Grid.Column="2" Icon="Filter" Label="Filter" Width="Auto" HorizontalAlignment="Right" Foreground="White">
                     <AppBarButton.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem x:Name="FilterBezahlt" Text="Hat schon Bezahlt" Click="FilterBezahlt_Click" />
-                            <MenuFlyoutItem x:Name="FilternichtBezahlt" Text="Muss noch Zahlen" Click="FilternichtBezahlt_Click" />
+                            <MenuFlyoutItem x:Name="FilterBezahlt" Text="Hat schon bezahlt" Click="FilterBezahlt_Click" />
+                            <MenuFlyoutItem x:Name="FilternichtBezahlt" Text="Muss noch zahlen" Click="FilternichtBezahlt_Click" />
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem x:Name="clearFilterAbteilung" Text="Nicht Filtern oder Suchen" Click="ClearFilter_Click" />
+                            <MenuFlyoutItem x:Name="clearFilterAbteilung" Text="Nicht filtern oder suchen" Click="ClearFilter_Click" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
@@ -73,8 +73,8 @@
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Verein" Binding="{Binding Vereinsname}" Tag="Verein" />
                     <controls:DataGridTextColumn Header="Anzahl Boote" Binding="{Binding AnzahlBoote}" Tag="Startnummer" />
-                    <controls:DataGridTextColumn Header="Bisher gesammt Bezahlt [€]" Binding="{Binding BisherGesammtBezahlt}" Tag="Rennbezeichnung" />
-                    <controls:DataGridTextColumn Header="Gesammt zu Zahlen [€]" Binding="{Binding GesammtZuZahlen}" Tag="Verein" />
+                    <controls:DataGridTextColumn Header="Bisher gesammt bezahlt [€]" Binding="{Binding BisherGesammtBezahlt}" Tag="Rennbezeichnung" />
+                    <controls:DataGridTextColumn Header="Gesamt zu zahlen [€]" Binding="{Binding GesammtZuZahlen}" Tag="Verein" />
                     <controls:DataGridTextColumn Header="Summe [€]" Binding="{Binding Total}" Tag="Verein" />
                 </controls:DataGrid.Columns>
             </controls:DataGrid>

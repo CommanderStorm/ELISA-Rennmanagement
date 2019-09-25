@@ -91,7 +91,7 @@ namespace App1
             ContentDialog noWifiDialog = new ContentDialog
             {
                 Title = "Der Import wurde gestart!",
-                Content = "Das dauert leider etwas, habe deshalb bitte etwas gedult.",
+                Content = "Das dauert leider etwas, habe deshalb bitte etwas Geduld.",
                 CloseButtonText = "Ok"
             };
             _ = await noWifiDialog.ShowAsync();

@@ -42,13 +42,13 @@
 
                 <NavigationViewItemSeparator/>
 
-                <NavigationViewItem Tag="atletenBearbeitung" Content="Atleten Bearbeiten">
+                <NavigationViewItem Tag="atletenBearbeitung" Content="Athleten bearbeiten">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE902; &#xE70F;" Margin="-5"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 
-                <NavigationViewItem Tag="bootsdatenBearbeiten" Content="Bootsdaten Bearbeiten">
+                <NavigationViewItem Tag="bootsdatenBearbeiten" Content="Bootsdaten bearbeiten">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE912; &#xE70F;" Margin="-5"/>
                     </NavigationViewItem.Icon>

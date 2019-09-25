@@ -16,7 +16,7 @@
         <Grid.Resources>
             <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:BootsImport">
                 <StackPanel>
-                    <TextBlock Margin="20" Text="Hier sind die Details für das Ausgewählte Boot:" />
+                    <TextBlock Margin="20" Text="Hier sind die Details für das ausgewählte Boot:" />
                     <Grid Margin="20,10" Padding="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -45,7 +45,7 @@
                             <TextBlock Grid.Row="2" Grid.Column="2" Text="Kommentare: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
                         <TextBlock Grid.Column="3" FontSize="13" Text="{Binding Verein}" Margin="3,0"/>
                             <TextBlock Grid.Row="1" Grid.Column="3" FontSize="13" Text="{Binding Bootsname}" Margin="3,0"/>
-                            <TextBlock Grid.Row="2" Grid.Column="3" FontSize="13" Text="{Binding Kommentare}" Margin="3,0"/>
+                            <TextBlock Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" FontSize="13" Text="{Binding Kommentare}" Margin="3,0"/>
 
                             <TextBlock Grid.Column="4" Text="Name des Melders: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
                             <TextBlock Grid.Row="1" Grid.Column="4" Text="Verein des Melders: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
@@ -80,7 +80,7 @@
                             <MenuFlyoutItem x:Name="FilterAbteilung3" Text="Abteilung 3" Click="FilterAbteilung3_Click" />
                             <MenuFlyoutItem x:Name="FilterAbteilung4" Text="Abteilung 4" Click="FilterAbteilung4_Click" />
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem x:Name="FilterNurMitKommentar" Text="nur Boote mit Kommentaren Anzeigen" Click="FilterNurMitKommentar_Click" />
+                            <MenuFlyoutItem x:Name="FilterNurMitKommentar" Text="nur Boote mit Kommentaren anzeigen" Click="FilterNurMitKommentar_Click" />
                             <MenuFlyoutSeparator />
                             <MenuFlyoutItem x:Name="clearFilterAbteilung" Text="Nicht Filtern oder Suchen" Click="ClearFilterAbteilung_Click" />
                         </MenuFlyout>
