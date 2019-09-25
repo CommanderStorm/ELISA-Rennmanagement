@@ -12,7 +12,7 @@ namespace App1
         public Konflikte()
         {
             this.InitializeComponent();
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten();
+            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetRennKonflikte();
         }
 
         private void Go_Click(object _, Windows.UI.Xaml.RoutedEventArgs _1)

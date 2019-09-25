@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -235,14 +236,8 @@ namespace DataAccessLibrary
         public string Rennbezeichnung { get; set; }
         public decimal ZuZahlen { get; set; }
         public string Bootstyp { get; set; }
-    }
-
-    public class Abteilung
-    {
-        public string RennID { get; set; }
-        public string Rennbezeichnung { get; set; }
-        public string Bootstyp { get; set; }
         public int AnzahlBoote { get; set; }
+        public int Abteilung { get; set; }
     }
 
     public class Boot : INotifyPropertyChanged
@@ -1173,6 +1168,41 @@ namespace DataAccessLibrary
                 }
             }
             return vereine;
+        }
+
+        public static ObservableCollection<Rennen> GetRennKonflikte()
+        {
+            var abteilungen = new ObservableCollection<Rennen>();
+            const string GetAllVereineDataQuery = "SELECT ProtoBoote.RennID, count(ProtoBoote.RennID) AS AnzahlBoote, ProtoBoote.Abteilung as Abteilung, RennenLookuptable.Bezeichnung as Rennbezeichnung, RennenLookuptable.BootsTyp as BootsTyp "
+                +"FROM ProtoBoote "
+                +"JOIN RennenLookuptable ON RennenLookuptable.RennNr = ProtoBoote.RennID "
+                +"GROUP BY ProtoBoote.RennID order by ProtoBoote.Abteilung ASC, RennenLookuptable.ROWID ASC;";
+            Debug.WriteLine(GetAllVereineDataQuery);
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = GetAllVereineDataQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Rennen rennentmp = new Rennen
+                            {
+                                RennID = reader.GetString(0),
+                                AnzahlBoote = reader.GetInt32(1),
+                                Abteilung = reader.GetInt32(2),
+                                Rennbezeichnung = reader.GetString(3),
+                                Bootstyp = reader.GetString(4)
+                            };
+
+                            abteilungen.Add(rennentmp);
+                        }
+                    }
+                }
+            }
+            return abteilungen;
         }
 
         internal static void UpdateBootsImport(string zeilenName, object updateWert, int BootsID)

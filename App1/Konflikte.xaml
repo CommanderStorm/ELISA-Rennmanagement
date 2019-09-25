@@ -14,7 +14,7 @@
         </StackPanel>
         <Grid>
             <Grid.Resources>
-                <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:Abteilung">
+                <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:Rennen">
                     <StackPanel>
                         <TextBlock Margin="20" Text="Hier sind die Details für den Ausgewählten Lauf Boot:" />
                     </StackPanel>
@@ -41,23 +41,27 @@
                     Anleitung:
                         </TextBlock>
                         <TextBlock VerticalAlignment="Top"  Style="{ThemeResource  CaptionTextBlockStyle}" FocusVisualPrimaryBrush="White" Foreground="White" HorizontalAlignment="Left" Margin="0,30,0,0">
-                    Sobald du auf die "Go!"-Schaltfläche drückst analysiert ein Algorythmus den zuvor importierten und bearbeiteten Datensatz. <LineBreak/> <LineBreak/> 
-                    Er geht dabei so vor, das er im <Bold>ersten Schritt</Bold> schaut, das keinne Personen <Bold FontStyle="Italic">Doppelt in einem Boot</Bold> oder <Bold FontStyle="Italic">Doppelt in einer Altersklasse</Bold>
-                    startet. Sollte das dennoch der Fall sein, wird ein <Bold>PopUp</Bold> erzeugt und mann muss die im Popup genanten Boote bearbeiten. <LineBreak/>
-                    Ein ähnliches <Bold>PopUp</Bold> wird erzeugt, falls ein Sportlerr in mehr Rennen starten soll, als in den Einstellungen Abteilungen definiert wurden. Hier muss mann einfach die Einstellungen so ändern, das es entweder genug Abteilungen gibt, oder
-                    das es diesen Athleten in nicht so vielen Rennen gibt.<LineBreak/><LineBreak/>
-                    <Bold> Als nächstes </Bold> versucht er, ob es Möglichkeiten gibt, bei denen möglichst kein Boot (durch <Bold FontStyle="Italic"> Bootsdoppelbenutzungen, Doppelstarts oder "harte" Zeitbegrenzungen</Bold>) nicht starten kann. Falls dies nicht möglich ist, versucht er möglichst wenige Boote auszuschließen.
-                    Eine Veränderung der Abteilungseinstellungen kann in eimem solchem Fall möglicherweise Abhilfe schafffen.
-                    <LineBreak/><LineBreak/>
-                    Falls die bisher auferlegten Einschränkungen des Ergebnisraumess mehr als eine Lösung hervorgebracht haben, wird die Beste nach diesen Faktoren (Anordnung in absteigender wichtigkeit) ausgewählt:<LineBreak/>
-                    1. Kinder Starten im ersten Lauf<LineBreak/>
-                    2. "weiche" Zeitbeschränkungen werden Beachtet<LineBreak/>
-                    3. Junioren starten morgens (1.Hälfte der Läufe)<LineBreak/>
-                    4. Rennnboote starten morgens (1.Hälfte der Läufe)<LineBreak/>
-                    5. Die Abteilunngen sind mit möglichst gleich vielen Booten auf dem See<LineBreak/><LineBreak/>
-                    Ich hoffe dieser Erklärtext konnt dir helfen. Sollten dennoch Fragen oder Probleme auftauchen, Ruf mich doch einfach an.<LineBreak/>
-                    Meine Telefonnummer steht im Mitgleiderverzeichnis bei den Vorständen,<LineBreak/> Frank E.<LineBreak/>
-                    (Ich kann sie hier leider nicht Veröffentlichen, da dieses Projekt in GitHub öffentlich zugänglich ist)
+                            Sobald du auf die "Go!"-Schaltfläche drückst, analysiert ein Algorithmus den zuvor importierten und bearbeiteten Datensatz. <LineBreak/> <LineBreak/>
+
+                            Er geht dabei so vor, dass er im <Bold>ersten Schritt</Bold> schaut, dass keine Person <Bold FontStyle="Italic">doppelt in einem Boot</Bold> oder <Bold FontStyle="Italic">doppelt in einer Altersklasse</Bold> startet. Sollte das dennoch der Fall sein, wird ein <Bold>PopUp</Bold> erzeugt und man muss die, im Popup genannten, Boote bearbeiten. <LineBreak/>
+                            Ein ähnliches <Bold>PopUp</Bold> wird erzeugt, wenn ein Sportler in mehr Rennen starten will, als Abteilungen in den Einstellungen definiert wurden. Hier muss man die Einstellungen so ändern, dass es entweder genug Abteilungen gibt, oder dass dieser Athlet nicht so oft startet. <LineBreak/>
+                            (Bitte nicht ermorden, dass erfasst das Programm nicht und ist deshalb keine Option!) <LineBreak/><LineBreak/>
+
+                            <Bold> Als Nächstes </Bold> versucht der Algorithmus, ob es Möglichkeiten gibt, bei denen möglichst kein Boot (durch <Bold FontStyle="Italic"> Bootsdoppelbenutzungen, Doppelstarts oder "harte" Zeitbegrenzungen</Bold>) nicht starten kann. Falls dies nicht möglich ist, versucht er möglichst wenige Boote auszuschließen. Eine Veränderung der Abteilungseinstellungen kann in einem solchem Fall möglicherweise Abhilfe schaffen.
+                            <LineBreak/><LineBreak/>
+
+
+                            Falls die bisher auferlegten Einschränkungen des Ergebnisraumes mehr als eine Lösung hervorgebracht haben, wird die Beste nach diesen Faktoren (Anordnung in absteigender Wichtigkeit) ausgewählt:<LineBreak/>
+                                                1. Kinder starten im ersten Lauf<LineBreak/>
+                                                2. "Weiche" Zeitbeschränkungen werden beachtet<LineBreak/>
+                                                3. Junioren starten morgens (1. Hälfte der Läufe) <LineBreak/>
+                                                4. Rennboote starten morgens (1. Hälfte der Läufe) <LineBreak/>
+                                                5. Die Abteilungen sind mit möglichst gleich vielen Booten am Start<LineBreak/><LineBreak/>
+
+                            Ich hoffe, diese Ausführung konnte dir helfen. Sollten dennoch Fragen oder Probleme auftauchen, ruf mich doch einfach an. <LineBreak/>
+                            Meine Telefonnummer steht im Mitgliederverzeichnis bei den Vorständen, <LineBreak/> Frank E.<LineBreak/>
+                             (Ich kann sie hier leider nicht veröffentlichen, da dieses Projekt in GitHub öffentlich zugänglich ist)
+
                         </TextBlock>
                     </StackPanel>
                 </ScrollViewer>
