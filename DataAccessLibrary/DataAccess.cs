@@ -1100,12 +1100,14 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            Verein vereintmp = new Verein();
-                            vereintmp.Vereinsname = reader.GetString(0);
-                            vereintmp.AnzahlBoote = reader.GetInt32(1);
-                            vereintmp.BisherGesammtBezahlt = reader.GetDecimal(2);
-                            vereintmp.GesammtZuZahlen = reader.GetDecimal(3);
-                            vereintmp.Total = reader.GetDecimal(4);
+                            Verein vereintmp = new Verein
+                            {
+                                Vereinsname = reader.GetString(0),
+                                AnzahlBoote = reader.GetInt32(1),
+                                BisherGesammtBezahlt = reader.GetDecimal(2),
+                                GesammtZuZahlen = reader.GetDecimal(3),
+                                Total = reader.GetDecimal(4)
+                            };
                             vereintmp.Imp_BoolBezahlt = vereintmp.BisherGesammtBezahlt >= vereintmp.GesammtZuZahlen;
                             vereintmp.BoolBezahlt = vereintmp.Imp_BoolBezahlt;
                         
@@ -1144,12 +1146,14 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            Verein vereintmp = new Verein();
-                            vereintmp.Vereinsname = reader.GetString(0);
-                            vereintmp.AnzahlBoote = reader.GetInt32(1);
-                            vereintmp.BisherGesammtBezahlt = reader.GetDecimal(2);
-                            vereintmp.GesammtZuZahlen = reader.GetDecimal(3);
-                            vereintmp.Total = reader.GetDecimal(4);
+                            Verein vereintmp = new Verein
+                            {
+                                Vereinsname = reader.GetString(0),
+                                AnzahlBoote = reader.GetInt32(1),
+                                BisherGesammtBezahlt = reader.GetDecimal(2),
+                                GesammtZuZahlen = reader.GetDecimal(3),
+                                Total = reader.GetDecimal(4)
+                            };
                             vereintmp.Imp_BoolBezahlt = vereintmp.BisherGesammtBezahlt >= vereintmp.GesammtZuZahlen;
                             vereintmp.BoolBezahlt = vereintmp.Imp_BoolBezahlt;
 

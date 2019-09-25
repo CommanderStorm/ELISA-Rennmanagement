@@ -12,16 +12,15 @@ namespace App1
         public Konflikte()
         {
             this.InitializeComponent();
-            dataGrid.
             dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten();
         }
 
-        private void go_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void Go_Click(object _, Windows.UI.Xaml.RoutedEventArgs _1)
         {
 
         }
 
-        private void ExportToSearch_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ExportToSearch_Click(object _, Windows.UI.Xaml.RoutedEventArgs _1)
         {
 
         }
