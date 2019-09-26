@@ -3,8 +3,8 @@ using System;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-
-
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using System.Threading.Tasks;
 
 namespace App1
 {
@@ -16,37 +16,45 @@ namespace App1
         public AtletenBearbeiten()
         {
             this.InitializeComponent();
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten();
+            _ = LoadAsync();
+        }
+
+        public async Task LoadAsync()
+        {
+            LoadingControl.IsLoading = true;
+            this.FindName("dataGrid");
+            dataGrid.ItemsSource = await Task.Run(() => DataAccess.GetImportdatenBearbeiten());
+            LoadingControl.IsLoading = false;
         }
 
         private void FilterAbteilung1_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(1);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(1);
         }
 
         private void FilterAbteilung2_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(2);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(2);
         }
 
         private void FilterAbteilung3_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(3);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(3);
         }
 
         private void FilterAbteilung4_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(4);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(4);
         }
 
         private void ClearFilterAbteilung_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten();
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten();
         }
 
         private void FilterNurMitKommentar_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(true);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(true);
         }
 
         private void Searchbox_TextChanged(object _, TextChangedEventArgs _1)
