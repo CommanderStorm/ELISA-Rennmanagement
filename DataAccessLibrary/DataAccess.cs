@@ -7,6 +7,25 @@ using System.Diagnostics;
 
 namespace DataAccessLibrary
 {
+    public class Tier1Kollision : INotifyPropertyChanged
+    {
+        public int BootID1 { get; set; }
+        public int BootID2 { get; set; }
+        public string Name { get; set; }
+        public string RennID { get; set; }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
+    }
+
+
     public class BootsImport : INotifyPropertyChanged
     {
         public int BootsID { get; set; }
@@ -26,9 +45,9 @@ namespace DataAccessLibrary
                     this.Rennbezeichnung = _tmp.Rennbezeichnung;
                     this.ZuZahlen = _tmp.ZuZahlen;
                     this.BoolBezahlt = this.ZuZahlen <= this.Bezahlt;
-                    DataAccess.UpdateBootsImport("RennID", value, this.BootsID);
-                    DataAccess.UpdateBootsImport("Bootstyp", _tmp.Bootstyp, this.BootsID);
-                    DataAccess.UpdateBootsImport("ZuZahlen", _tmp.ZuZahlen, this.BootsID);
+                    DataModification.UpdateBootsImport("RennID", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Bootstyp", _tmp.Bootstyp, this.BootsID);
+                    DataModification.UpdateBootsImport("ZuZahlen", _tmp.ZuZahlen, this.BootsID);
                 }
             }
         }
@@ -41,7 +60,7 @@ namespace DataAccessLibrary
                 if (Imp_Bootsname != value)
                 {
                     Imp_Bootsname = value;
-                    DataAccess.UpdateBootsImport("Bootsname", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Bootsname", value, this.BootsID);
                 }
             }
         }
@@ -54,7 +73,7 @@ namespace DataAccessLibrary
                 if (Imp_Verein != value)
                 {
                     Imp_Verein = value;
-                    DataAccess.UpdateBootsImport("Verein", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Verein", value, this.BootsID);
                 }
             }
         }
@@ -67,7 +86,7 @@ namespace DataAccessLibrary
                 if (Imp_Steuerling != value)
                 {
                     Imp_Steuerling = value;
-                    DataAccess.UpdateBootsImport("Steuerling", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Steuerling", value, this.BootsID);
                 }
             }
         }
@@ -80,7 +99,7 @@ namespace DataAccessLibrary
                 if (Imp_Athlet1 != value)
                 {
                     Imp_Athlet1 = value;
-                    DataAccess.UpdateBootsImport("Athlet1", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Athlet1", value, this.BootsID);
                 }
             }
         }
@@ -93,7 +112,7 @@ namespace DataAccessLibrary
                 if (Imp_Athlet2 != value)
                 {
                     Imp_Athlet2 = value;
-                    DataAccess.UpdateBootsImport("Athlet2", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Athlet2", value, this.BootsID);
                 }
             }
         }
@@ -106,7 +125,7 @@ namespace DataAccessLibrary
                 if (Imp_Athlet3 != value)
                 {
                     Imp_Athlet3 = value;
-                    DataAccess.UpdateBootsImport("Athlet3", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Athlet3", value, this.BootsID);
                 }
             }
         }
@@ -119,7 +138,7 @@ namespace DataAccessLibrary
                 if (Imp_Athlet4 != value)
                 {
                     Imp_Athlet4 = value;
-                    DataAccess.UpdateBootsImport("Athlet4", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Athlet4", value, this.BootsID);
                 }
             }
         }
@@ -132,7 +151,7 @@ namespace DataAccessLibrary
                 if (Imp_Athlet5 != value)
                 {
                     Imp_Athlet5 = value;
-                    DataAccess.UpdateBootsImport("Athlet5", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Athlet5", value, this.BootsID);
                 }
             }
         }
@@ -145,7 +164,7 @@ namespace DataAccessLibrary
                 if (Imp_Athlet6 != value)
                 {
                     Imp_Athlet6 = value;
-                    DataAccess.UpdateBootsImport("Athlet6", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Athlet6", value, this.BootsID);
                 }
             }
         }
@@ -158,7 +177,7 @@ namespace DataAccessLibrary
                 if (Imp_Athlet7 != value)
                 {
                     Imp_Athlet7 = value;
-                    DataAccess.UpdateBootsImport("Athlet7", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Athlet7", value, this.BootsID);
                 }
             }
         }
@@ -171,7 +190,7 @@ namespace DataAccessLibrary
                 if (Imp_Athlet8 != value)
                 {
                     Imp_Athlet8 = value;
-                    DataAccess.UpdateBootsImport("Athlet8", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Athlet8", value, this.BootsID);
                 }
             }
         }
@@ -193,7 +212,7 @@ namespace DataAccessLibrary
                 if (Imp_Kommentare != value)
                 {
                     Imp_Kommentare = value;
-                    DataAccess.UpdateBootsImport("Kommentare", value, this.BootsID);
+                    DataModification.UpdateBootsImport("Kommentare", value, this.BootsID);
                 }
             }
         }
@@ -209,11 +228,11 @@ namespace DataAccessLibrary
                     Imp_BoolBezahlt = value;
                     if (value)
                     {
-                        DataAccess.UpdateBootsImport("Bezahlt", this.ZuZahlen, this.BootsID);
+                        DataModification.UpdateBootsImport("Bezahlt", this.ZuZahlen, this.BootsID);
                     }
                     else
                     {
-                        DataAccess.UpdateBootsImport("Bezahlt", 0, this.BootsID);
+                        DataModification.UpdateBootsImport("Bezahlt", 0, this.BootsID);
                     }
                 }
             }
@@ -277,11 +296,11 @@ namespace DataAccessLibrary
                     Imp_BoolBezahlt = value;
                     if (value)
                     {
-                        DataAccess.UpdateBoot("Bezahlt", this.ZuZahlen, this.BootsID);
+                        DataModification.UpdateBoot("Bezahlt", this.ZuZahlen, this.BootsID);
                     }
                     else
                     {
-                        DataAccess.UpdateBoot("Bezahlt", 0, this.BootsID);
+                        DataModification.UpdateBoot("Bezahlt", 0, this.BootsID);
                     }
                 }
             }
@@ -314,7 +333,7 @@ namespace DataAccessLibrary
                 if (Imp_BoolBezahlt != value)
                 {
                     Imp_BoolBezahlt = value;
-                    DataAccess.UpdateBootsBezahlstatus(VereinsBoote, value);
+                    DataModification.UpdateBootsBezahlstatus(VereinsBoote, value);
                 }
             }
         }
@@ -1205,6 +1224,12 @@ namespace DataAccessLibrary
             return abteilungen;
         }
 
+
+    }
+
+    public static class DataModification
+    {
+        private static readonly String sqliteConnectionString = "Filename=boote.db";
         internal static void UpdateBootsImport(string zeilenName, object updateWert, int BootsID)
         {
 
@@ -1242,6 +1267,8 @@ namespace DataAccessLibrary
             }
         }
 
+
+
         internal static void UpdateBoot(string zeilenName, object updateWert, int BootsID)
         {
             string UpdateOneBoatData = "UPDATE Boote "
@@ -1258,5 +1285,39 @@ namespace DataAccessLibrary
                 }
             }
         }
+
+        /*
+        public ObservableCollection<Tier1Kollision> GetTierOneKollisions()
+        {
+        var tierOneKollisionen = new ObservableCollection<Tier1Kollision>();
+            const string GetTierOneKollisionsSQLString = "";
+
+            Debug.WriteLine(GetTierOneKollisionsSQLString);
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = GetTierOneKollisionsSQLString;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Rennen rennentmp = new Tier1Kollision
+                            {
+                                RennID = reader.GetString(0),
+                                AnzahlBoote = reader.GetInt32(1),
+                                Abteilung = reader.GetInt32(2),
+                                Rennbezeichnung = reader.GetString(3),
+                                Bootstyp = reader.GetString(4)
+                            };
+
+                            tierOneKollisionen.Add(rennentmp);
+                        }
+                    }
+                }
+            }
+            return abteilungen;
+        }*/
     }
 }

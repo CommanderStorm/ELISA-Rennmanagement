@@ -14,37 +14,37 @@ namespace App1
         public BootsSuche()
         {
             this.InitializeComponent();
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten();
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten();
         }
 
         private void FilterAbteilung1_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(1);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(1);
         }
 
         private void FilterAbteilung2_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(2);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(2);
         }
 
         private void FilterAbteilung3_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(3);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(3);
         }
 
         private void FilterAbteilung4_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(4);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(4);
         }
 
         private void ClearFilterAbteilung_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten();
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten();
         }
 
         private void FilterNurMitKommentar_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(true);
+            dataGrid.ItemsSource = DataAccess.GetImportdatenBearbeiten(true);
         }
 
 

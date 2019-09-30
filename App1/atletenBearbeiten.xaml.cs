@@ -21,10 +21,8 @@ namespace App1
 
         public async Task LoadAsync()
         {
-            LoadingControl.IsLoading = true;
             this.FindName("dataGrid");
             dataGrid.ItemsSource = await Task.Run(() => DataAccess.GetImportdatenBearbeiten());
-            LoadingControl.IsLoading = false;
         }
 
         private void FilterAbteilung1_Click(object _, RoutedEventArgs _1)
