@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -359,26 +358,25 @@ namespace DataAccessLibrary
                 new SqliteConnection(sqliteConnectionString))
             {
                 db.Open();
-                String CreateBoote = "CREATE TABLE IF NOT EXISTS Boote (BootsID INTEGER, Abteilung INTEGER, Startnummer INTEGER, "
-                        + "Rennbezeichnung TEXT, RennID TEXT, Verein TEXT, Steuerling TEXT, Athlet1 TEXT, Athlet2 TEXT, "
-                        + "Athlet3 TEXT, Athlet4 TEXT, Athlet5 TEXT, Athlet6 TEXT, Athlet7 TEXT, Athlet8 TEXT, Meldername TEXT, "
-                        + "Melderadresse TEXT, Melderort TEXT, Melderverein TEXT, Melderemail TEXT, Meldertel TEXT, Melderfax TEXT, "
-                        + "Bezahlt REAL, ZuZahlen REAL);";
+                String CreateBoote = "CREATE TABLE IF NOT EXISTS Boote ('BootsID' INTEGER NOT NULL UNIQUE, 'Abteilung' INTEGER, "
+                    + "'Startnummer' INTEGER, 'RennID' TEXT, 'Bootsname' TEXT, 'GesammtVerein' TEXT, "
+                    + "'SteuerlingID' INTEGER, 'Athlet1ID'   INTEGER, 'Athlet2ID'   INTEGER, 'Athlet3ID'   INTEGER, 'Athlet4ID'   INTEGER, "
+                    + "'Athlet5ID'   INTEGER, 'Athlet6ID'   INTEGER, 'Athlet7ID'   INTEGER, 'Athlet8ID'   INTEGER, 'Meldername' TEXT, "
+                    + "'Melderadresse' TEXT, 'Melderort' TEXT, 'Melderverein'  TEXT, 'Melderemail'   TEXT, 'Meldertel' TEXT, "
+                    + "'Melderfax' TEXT, 'Bezahlt'   REAL, 'ZuZahlen'  REAL, 'Kommentare' TEXT, "
+                    + "PRIMARY KEY('BootsID'))";
+
                 using (SqliteCommand CreateBooteCommand = new SqliteCommand(CreateBoote, db))
                 {
                     CreateBooteCommand.ExecuteReader();
                 }
 
-                String CreateProtoBoote = "CREATE TABLE IF NOT EXISTS ProtoBoote (BootsID INTEGER, Abteilung INTEGER, "
-                        + "Startnummer INTEGER, Rennbezeichnung TEXT, RennID TEXT, Bootsname TEXT, Verein TEXT, "
-                        + "Steuerling TEXT, Athlet1 TEXT, Athlet2 TEXT, Athlet3 TEXT, Athlet4 TEXT, Athlet5 TEXT, "
-                        + "Athlet6 TEXT, Athlet7 TEXT, Athlet8 TEXT, Meldername TEXT, Melderadresse TEXT, "
-                        + "Melderort TEXT, Melderverein TEXT, Melderemail TEXT, Meldertel TEXT, Melderfax TEXT, "
-                        + "Bezahlt REAL, ZuZahlen REAL, Kommentare TEXT, Bootstyp TEXT);";
+                String CreatePersonen = "CREATE TABLE IF NOT EXISTS Person ('Name' TEXT, "
+                    + "'Verein' TEXT); ";
 
-                using (SqliteCommand CreateProtoBooteCommand = new SqliteCommand(CreateProtoBoote, db))
+                using (SqliteCommand CreateRennenLookuptableCommand = new SqliteCommand(CreatePersonen, db))
                 {
-                    CreateProtoBooteCommand.ExecuteReader();
+                    CreateRennenLookuptableCommand.ExecuteReader();
                 }
 
                 String CreateRennenLookuptable = "CREATE TABLE IF NOT EXISTS RennenLookuptable ('RennNr'  TEXT, "
@@ -586,27 +584,7 @@ namespace DataAccessLibrary
         public static void Reset()
         {
             ResetBoote();
-            ResetProtoBoote();
-        }
-
-        public static void ResetProtoBoote()
-        {
-            using (SqliteConnection db = new SqliteConnection(sqliteConnectionString))
-            {
-                db.Open();
-
-                using (SqliteCommand insertCommand = new SqliteCommand())
-                {
-                    insertCommand.Connection = db;
-
-                    // Use parameterized query to prevent SQL injection attacks
-                    insertCommand.CommandText = "DROP TABLE ProtoBoote;";
-                    insertCommand.ExecuteReader();
-
-                    db.Close();
-                }
-            }
-            InitializeDatabase();
+            ResetPersonen();
         }
 
         public static void ResetBoote()
@@ -629,8 +607,34 @@ namespace DataAccessLibrary
             InitializeDatabase();
         }
 
+        public static void ResetPersonen()
+        {
+            using (SqliteConnection db = new SqliteConnection(sqliteConnectionString))
+            {
+                db.Open();
 
-        public static void AddData(int BootsID, int Abteilung, int Startnummer, string Rennbezeichnung, string RennID, string Bootsname, string Verein, string Steuerling, string Athlet1, string Athlet2, string Athlet3, string Athlet4, string Athlet5, string Athlet6, string Athlet7, string Athlet8, string Meldername, string Melderadresse, string Melderort, string Melderverein, string Melderemail, string Meldertel, string Melderfax, decimal Bezahlt, string Kommentare)
+                using (SqliteCommand insertCommand = new SqliteCommand())
+                {
+                    insertCommand.Connection = db;
+
+                    // Use parameterized query to prevent SQL injection attacks
+                    insertCommand.CommandText = "DROP TABLE Personen;";
+                    insertCommand.ExecuteReader();
+
+                    db.Close();
+                }
+            }
+            InitializeDatabase();
+        }
+
+
+        public static void AddData(int BootsID, int Abteilung, int Startnummer, string Rennbezeichnung,
+            string RennID, string Bootsname, string Verein, string Steuerling, string SteuerlingVerein,
+            string Athlet1, string Athlet1Verein, string Athlet2, string Athlet2Verein, string Athlet3, string Athlet3Verein,
+            string Athlet4, string Athlet4Verein, string Athlet5, string Athlet5Verein, string Athlet6, string Athlet6Verein,
+            string Athlet7, string Athlet7Verein, string Athlet8, string Athlet8Verein,
+            string Meldername, string Melderadresse, string Melderort, string Melderverein, string Melderemail, string Meldertel, string Melderfax,
+            decimal Bezahlt, string Kommentare)
         {
             Rennen temprennen = RennenLookuptable_Query(RennID);
             string _Bootstyp = temprennen.Bootstyp;
@@ -661,6 +665,15 @@ namespace DataAccessLibrary
             Debug.WriteLine("Melderfax: " + Melderfax);
             Debug.WriteLine("Kommentare: " + Kommentare);
             */
+            int SteuerlingID = GetOrSetPersonenID(Steuerling, SteuerlingVerein);
+            int Athlet1ID = GetOrSetPersonenID(Athlet1, Athlet1Verein);
+            int Athlet2ID = GetOrSetPersonenID(Athlet2, Athlet2Verein);
+            int Athlet3ID = GetOrSetPersonenID(Athlet3, Athlet3Verein);
+            int Athlet4ID = GetOrSetPersonenID(Athlet4, Athlet4Verein);
+            int Athlet5ID = GetOrSetPersonenID(Athlet5, Athlet5Verein);
+            int Athlet6ID = GetOrSetPersonenID(Athlet6, Athlet6Verein);
+            int Athlet7ID = GetOrSetPersonenID(Athlet7, Athlet7Verein);
+            int Athlet8ID = GetOrSetPersonenID(Athlet8, Athlet8Verein);
             using (SqliteConnection db = new SqliteConnection(sqliteConnectionString))
             {
                 db.Open();
@@ -670,31 +683,94 @@ namespace DataAccessLibrary
                     insertCommand.Connection = db;
 
                     // Use parameterized query to prevent SQL injection attacks
-                    insertCommand.CommandText = "INSERT INTO ProtoBoote (BootsID, Abteilung, "
-                        + "Startnummer, Rennbezeichnung, RennID, Bootsname, Verein, "
+                    insertCommand.CommandText = "INSERT INTO Boote (BootsID, Abteilung, "
+                        + "Startnummer, RennID, Bootsname, Verein, "
                         + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
                         + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
                         + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen, Kommentare, Bootstyp) "
+                        + "Bezahlt, ZuZahlen, Kommentare) "
 
                         + "VALUES('" + BootsID + "', '" + Abteilung
-                        + "', '" + Startnummer + "', '" + _Rennbezeichnung
+                        + "', '" + Startnummer
                         + "', '" + RennID + "', '" + Bootsname
-                        + "', '" + Verein + "', '" + Steuerling
-                        + "', '" + Athlet1 + "', '" + Athlet2
-                        + "', '" + Athlet3 + "', '" + Athlet4
-                        + "', '" + Athlet5 + "', '" + Athlet6
-                        + "', '" + Athlet7 + "', '" + Athlet8
+                        + "', '" + Verein + "', '" + SteuerlingID
+                        + "', '" + Athlet1ID + "', '" + Athlet2ID
+                        + "', '" + Athlet3ID + "', '" + Athlet4ID
+                        + "', '" + Athlet5ID + "', '" + Athlet6ID
+                        + "', '" + Athlet7ID + "', '" + Athlet8ID
                         + "', '" + Meldername + "', '" + Melderadresse
                         + "', '" + Melderort + "', '" + Melderverein
                         + "', '" + Melderemail + "', '" + Meldertel
                         + "', '" + Melderfax + "', '" + Bezahlt
                         + "', '" + _ZuZahlen + "', '" + Kommentare
-                        + "', '" + _Bootstyp + "'); ";
+                        + "'); ";
                     Debug.WriteLine(insertCommand.CommandText);
                     insertCommand.ExecuteReader();
 
                     db.Close();
+                }
+            }
+        }
+
+        private static int GetOrSetPersonenID(string personenName, string personenVerein)
+        {
+            if (PersonIsNOTInDatabase(personenName, personenVerein))
+            {
+                using (SqliteConnection db = new SqliteConnection(sqliteConnectionString))
+                {
+                    db.Open();
+
+                    using (SqliteCommand insertCommand = new SqliteCommand())
+                    {
+                        insertCommand.Connection = db;
+
+                        // Use parameterized query to prevent SQL injection attacks
+                        insertCommand.CommandText = "INSERT INTO Personen (Name, "
+                            + "Verein) "
+
+                            + "VALUES('" + personenName + "', '" + personenVerein + "'); ";
+                        Debug.WriteLine(insertCommand.CommandText);
+                        insertCommand.ExecuteReader();
+
+                        db.Close();
+                    }
+                }
+            }
+            return GetPersonenID(personenName, personenVerein);
+        }
+
+        private static int GetPersonenID(string personenName, string personenVerein)
+        {
+            string personIsAlreadyInDatabaseGetIDQuery = "SELECT ROWID FROM Personen WHERE Name = '" + personenName + "' AND Verein = '" + personenVerein + "';";
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = personIsAlreadyInDatabaseGetIDQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        return reader.GetInt32(0);
+                    }
+                }
+            }
+        }
+
+        private static bool PersonIsNOTInDatabase(string personenName, string personenVerein)
+        {
+            string personIsAlreadyInDatabaseQuery = "SELECT count(*) FROM Personen WHERE Name = '" + personenName + "' AND Verein = '" + personenVerein + "';";
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = personIsAlreadyInDatabaseQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        return reader.GetInt32(0) == 0;
+                    }
                 }
             }
         }
@@ -730,7 +806,7 @@ namespace DataAccessLibrary
                         + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
                         + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
                         + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen, Kommentare, Bootstyp from ProtoBoote;";
+                        + "Bezahlt, ZuZahlen, Kommentare, Bootstyp from Boote;";
             var boote = new ObservableCollection<BootsImport>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -818,7 +894,7 @@ namespace DataAccessLibrary
                             + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
                             + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
                             + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                            + "Bezahlt, ZuZahlen, Kommentare, Bootstyp from ProtoBoote";
+                            + "Bezahlt, ZuZahlen, Kommentare, Bootstyp from Boote";
             if (nurBootemitKommentarewerdenAngezeigtBool)
             {
                 GetAllBoatDataQuery += " where NOT Kommentare = '';";
@@ -917,7 +993,7 @@ namespace DataAccessLibrary
                         + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
                         + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
                         + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen, Kommentare, Bootstyp from ProtoBoote where Abteilung = '" + Abteilungsnummer + "';";
+                        + "Bezahlt, ZuZahlen, Kommentare, Bootstyp from Boote where Abteilung = '" + Abteilungsnummer + "';";
             var boote = new ObservableCollection<BootsImport>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -1109,7 +1185,7 @@ namespace DataAccessLibrary
         {
             const string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC";
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY verein order by count(verein) DESC, verein ASC";
             var vereine = new ObservableCollection<Verein>();
             Debug.WriteLine(GetAllVereineDataQuery);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
@@ -1132,7 +1208,7 @@ namespace DataAccessLibrary
                             };
                             vereintmp.Imp_BoolBezahlt = vereintmp.BisherGesammtBezahlt >= vereintmp.GesammtZuZahlen;
                             vereintmp.BoolBezahlt = vereintmp.Imp_BoolBezahlt;
-                        
+
                             vereintmp.VereinsBoote = GetBooteByVereinVereinssuche(vereintmp.Vereinsname);
 
                             vereine.Add(vereintmp);
@@ -1147,7 +1223,7 @@ namespace DataAccessLibrary
         {
             string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC";
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY verein order by count(verein) DESC, verein ASC";
             if (hatBezahlt)
             {
                 GetAllVereineDataQuery += " WHERE sum(bezahlt) >= sum(zuZahlen);";
@@ -1192,10 +1268,10 @@ namespace DataAccessLibrary
         public static ObservableCollection<Rennen> GetRennKonflikte()
         {
             var abteilungen = new ObservableCollection<Rennen>();
-            const string GetAllVereineDataQuery = "SELECT ProtoBoote.RennID, count(ProtoBoote.RennID) AS AnzahlBoote, ProtoBoote.Abteilung as Abteilung, RennenLookuptable.Bezeichnung as Rennbezeichnung, RennenLookuptable.BootsTyp as BootsTyp "
-                +"FROM ProtoBoote "
-                +"JOIN RennenLookuptable ON RennenLookuptable.RennNr = ProtoBoote.RennID "
-                +"GROUP BY ProtoBoote.RennID order by ProtoBoote.Abteilung ASC, RennenLookuptable.ROWID ASC;";
+            const string GetAllVereineDataQuery = "SELECT Boote.RennID, count(Boote.RennID) AS AnzahlBoote, Boote.Abteilung as Abteilung, RennenLookuptable.Bezeichnung as Rennbezeichnung, RennenLookuptable.BootsTyp as BootsTyp "
+                + "FROM Boote "
+                + "JOIN RennenLookuptable ON RennenLookuptable.RennNr = Boote.RennID "
+                + "GROUP BY Boote.RennID order by Boote.Abteilung ASC, RennenLookuptable.ROWID ASC;";
             Debug.WriteLine(GetAllVereineDataQuery);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -1234,7 +1310,7 @@ namespace DataAccessLibrary
         {
 
             string UpdateOneBoatData =
-                "UPDATE ProtoBoote "
+                "UPDATE Boote "
                 + "SET '" + zeilenName + "' = '" + updateWert.ToString()
                 + "' WHERE BootsID = '" + BootsID.ToString() + "';";
             Debug.WriteLine(UpdateOneBoatData);

@@ -150,14 +150,23 @@ namespace App1
                         string Bootsname = CellLookup(sheet, "C26");
                         string Verein = CellLookup(sheet, "G12");
                         string Steuerling = NamenLookup(sheet, "D24", "C24");
+                        string SteuerlingVerein = CellLookup(sheet, "G16");
                         string Athlet1 = NamenLookup(sheet, "D16", "C16");
+                        string Athlet1Verein = CellLookup(sheet, "G16");
                         string Athlet2 = NamenLookup(sheet, "D17", "C17");
+                        string Athlet2Verein = CellLookup(sheet, "G17");
                         string Athlet3 = NamenLookup(sheet, "D18", "C18");
+                        string Athlet3Verein = CellLookup(sheet, "G18");
                         string Athlet4 = NamenLookup(sheet, "D19", "C19");
+                        string Athlet4Verein = CellLookup(sheet, "G19");
                         string Athlet5 = NamenLookup(sheet, "D20", "C20");
+                        string Athlet5Verein = CellLookup(sheet, "G20");
                         string Athlet6 = NamenLookup(sheet, "D21", "C21");
+                        string Athlet6Verein = CellLookup(sheet, "G21");
                         string Athlet7 = NamenLookup(sheet, "D22", "C22");
+                        string Athlet7Verein = CellLookup(sheet, "G22");
                         string Athlet8 = NamenLookup(sheet, "D23", "C23");
+                        string Athlet8Verein = CellLookup(sheet, "G23");
                         string Meldername = NamenLookup(sheet, "G3", "D3");
                         string Melderadresse = FirstCharToUpper(CellLookup(sheet, "D4"));
                         string Melderort = CellLookup(sheet, "D5") + " " + FirstCharToUpper(CellLookup(sheet, "F5"));
@@ -168,7 +177,12 @@ namespace App1
                         string Kommentare = CellLookup(sheet, "D27");
                         decimal Bezahlt = 0;
 
-                        DataAccess.AddData(BootsID, 0, 0, Rennbezeichnung, RennID, Bootsname, Verein, Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, Melderort, Melderverein, Melderemail, Meldertel, Melderfax, Bezahlt, Kommentare);
+                        DataAccess.AddData(BootsID, 0, 0, Rennbezeichnung, RennID, Bootsname, Verein,
+                            Steuerling, SteuerlingVerein, Athlet1, Athlet1Verein, Athlet2, Athlet2Verein,
+                            Athlet3, Athlet3Verein, Athlet4, Athlet4Verein, Athlet5, Athlet5Verein,
+                            Athlet6, Athlet6Verein, Athlet7, Athlet7Verein, Athlet8, Athlet8Verein,
+                            Meldername, Melderadresse, Melderort, Melderverein, Melderemail,
+                            Meldertel, Melderfax, Bezahlt, Kommentare);
                     }
                     else
                     {
