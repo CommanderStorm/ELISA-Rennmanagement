@@ -1,5 +1,6 @@
 # Roseninselachter-Rennmanagement
-This is the (unofficial) Roseninselachter-Software. It is designed for this specific rowing-event and is verry usecase-specific.
+This is the (unofficial) [Roseninselachter](https://www.mrsv-bayern.de/rudern-roseninselachter/)-Software. It is designed for this specific rowing-event and is verry usecase-specific.
+
 
 ## "Core"-Features *(see milestones for expansion-plans)*
 - Import of all data from the Exel-sheets
