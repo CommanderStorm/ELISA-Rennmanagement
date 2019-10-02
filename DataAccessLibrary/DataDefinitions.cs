@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLibrary
 {
@@ -165,9 +160,11 @@ namespace DataAccessLibrary
     {
         public int BootsID { get; set; }
         public int Abteilung { get; set; }
-
-        public int Startnummer { get; set; }
+        public string RennID { get; set; }
         public string Rennbezeichnung { get; set; }
+        public string Bootstyp { get; set; }
+        public string Bootsname { get; set; }
+        public int Startnummer { get; set; }
         public string Verein { get; set; }
         public string Steuerling { get; set; }
         public string Athlet1 { get; set; }
@@ -187,7 +184,6 @@ namespace DataAccessLibrary
         public string Melderemail { get; set; }
         public string Meldertel { get; set; }
         public string Melderfax { get; set; }
-        public string RennID { get; set; }
         public bool BoolBezahlt
         {
             get => Imp_BoolBezahlt;

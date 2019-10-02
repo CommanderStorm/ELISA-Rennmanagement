@@ -19,10 +19,5 @@ namespace App1
         {
 
         }
-
-        private void ExportToSearch_Click(object _, Windows.UI.Xaml.RoutedEventArgs _1)
-        {
-
-        }
     }
 }

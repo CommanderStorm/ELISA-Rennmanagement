@@ -1,7 +1,6 @@
 ﻿using DataAccessLibrary;
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -15,13 +14,7 @@ namespace App1
         public AtletenBearbeiten()
         {
             this.InitializeComponent();
-            _ = LoadAsync();
-        }
-
-        public async Task LoadAsync()
-        {
-            this.FindName("dataGrid");
-            dataGrid.ItemsSource = await Task.Run(() => DataAccess.GetDatenBearbeiten());
+            dataGrid.ItemsSource = DataAccess.GetDatenBearbeiten();
         }
 
         private void FilterAbteilung1_Click(object _, RoutedEventArgs _1)

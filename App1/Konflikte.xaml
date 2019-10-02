@@ -65,18 +65,7 @@
                         </TextBlock>
                     </StackPanel>
                 </ScrollViewer>
-                <Grid Grid.Column="1" Grid.Row="1" Margin="5,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="goButton" Content="GO!" Margin="0,0,10,0" Click="Go_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Foreground="#0062AC" Background="WhiteSmoke" FontSize="90" FontWeight="Bold"/>
-                    <Button x:Name="ExportToSearch" Grid.Column="1" Click="ExportToSearch_Click" Margin="10,0,0,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Foreground="#0062AC" Background="WhiteSmoke">
-                        <Border BorderBrush="{x:Null}" Height="Auto">
-                            <TextBlock Text="Export der hier erarbeiteten Daten in den Suchmodus" TextWrapping="Wrap" TextAlignment="Center" FontSize="21" FontWeight="Bold"/>
-                        </Border>
-                    </Button>
-                </Grid>
+                <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="10,0" x:Name="goButton" Content="GO!" Click="Go_Click" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Foreground="#0062AC" Background="WhiteSmoke" FontSize="90" FontWeight="Bold"/>
             </Grid>
             <controls:DataGrid
         Grid.Row="1"

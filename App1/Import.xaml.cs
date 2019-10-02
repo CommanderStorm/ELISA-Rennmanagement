@@ -145,7 +145,6 @@ namespace App1
                         }
                         //import Exel to DataAcccess
                         int BootsID = BootsIDCounter++;
-                        string Rennbezeichnung = " [Ak " + CellLookup(sheet, "E12") + "]";
                         string RennID = CellLookup(sheet, "A12");
                         string Bootsname = CellLookup(sheet, "C26");
                         string Verein = CellLookup(sheet, "G12");
@@ -177,7 +176,7 @@ namespace App1
                         string Kommentare = CellLookup(sheet, "D27");
                         decimal Bezahlt = 0;
 
-                        DataAccess.AddData(BootsID, 0, 0, Rennbezeichnung, RennID, Bootsname, Verein,
+                        DataAccess.AddData(BootsID, 0, 0, RennID, Bootsname, Verein,
                             Steuerling, SteuerlingVerein, Athlet1, Athlet1Verein, Athlet2, Athlet2Verein,
                             Athlet3, Athlet3Verein, Athlet4, Athlet4Verein, Athlet5, Athlet5Verein,
                             Athlet6, Athlet6Verein, Athlet7, Athlet7Verein, Athlet8, Athlet8Verein,

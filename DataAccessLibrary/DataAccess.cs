@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 
 namespace DataAccessLibrary
@@ -29,7 +28,7 @@ namespace DataAccessLibrary
                     CreateBooteCommand.ExecuteReader();
                 }
 
-                String CreatePersonen = "CREATE TABLE IF NOT EXISTS Person ('Name' TEXT, "
+                String CreatePersonen = "CREATE TABLE IF NOT EXISTS Personen ('Name' TEXT, "
                     + "'Verein' TEXT); ";
 
                 using (SqliteCommand CreateRennenLookuptableCommand = new SqliteCommand(CreatePersonen, db))
@@ -286,7 +285,7 @@ namespace DataAccessLibrary
         }
 
 
-        public static void AddData(int BootsID, int Abteilung, int Startnummer, string Rennbezeichnung,
+        public static void AddData(int BootsID, int Abteilung, int Startnummer,
             string RennID, string Bootsname, string Verein, string Steuerling, string SteuerlingVerein,
             string Athlet1, string Athlet1Verein, string Athlet2, string Athlet2Verein, string Athlet3, string Athlet3Verein,
             string Athlet4, string Athlet4Verein, string Athlet5, string Athlet5Verein, string Athlet6, string Athlet6Verein,
@@ -295,8 +294,6 @@ namespace DataAccessLibrary
             decimal Bezahlt, string Kommentare)
         {
             Rennen temprennen = RennenLookuptable_Query(RennID);
-            string _Bootstyp = temprennen.Bootstyp;
-            string _Rennbezeichnung = temprennen.Rennbezeichnung + Rennbezeichnung;
             decimal _ZuZahlen = temprennen.ZuZahlen;
             /*
             Debug.WriteLine("BootID: " + BootsID);
@@ -342,9 +339,9 @@ namespace DataAccessLibrary
 
                     // Use parameterized query to prevent SQL injection attacks
                     insertCommand.CommandText = "INSERT INTO Boote (BootsID, Abteilung, "
-                        + "Startnummer, RennID, Bootsname, Verein, "
-                        + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
-                        + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
+                        + "Startnummer, RennID, Bootsname, GesammtVerein, "
+                        + "SteuerlingID, Athlet1ID, Athlet2ID, Athlet3ID, Athlet4ID, Athlet5ID, "
+                        + "Athlet6ID, Athlet7ID, Athlet8ID, Meldername, Melderadresse, "
                         + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
                         + "Bezahlt, ZuZahlen, Kommentare) "
 
@@ -399,7 +396,7 @@ namespace DataAccessLibrary
 
         private static int GetPersonenID(string personenName, string personenVerein)
         {
-            string personIsAlreadyInDatabaseGetIDQuery = "SELECT ROWID FROM Personen WHERE Name = '" + personenName + "' AND Verein = '" + personenVerein + "';";
+            string personIsAlreadyInDatabaseGetIDQuery = "SELECT ROWID FROM Personen WHERE Name = '" + personenName + "' AND GesammtVerein = '" + personenVerein + "';";
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())
@@ -478,9 +475,9 @@ namespace DataAccessLibrary
         public static ObservableCollection<BootEditable> GetDatenBearbeiten()
         {
             const string GetAllBoatDataQuery = "select BootsID, Abteilung, "
-                        + "Startnummer, RennID, Bootsname, Verein, "
-                        + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
-                        + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
+                        + "Startnummer, RennID, Bootsname, GesammtVerein, "
+                        + "SteuerlingID, Athlet1ID, Athlet2ID, Athlet3ID, Athlet4ID, Athlet5ID, "
+                        + "Athlet6ID, Athlet7ID, Athlet8ID, Meldername, Melderadresse, "
                         + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
                         + "Bezahlt, ZuZahlen, Kommentare from Boote;";
             var boote = new ObservableCollection<BootEditable>();
@@ -546,11 +543,14 @@ namespace DataAccessLibrary
                                 boot.Bezahlt = reader.GetDecimal(22);
                                 boot.ZuZahlen = reader.GetDecimal(23);
 
-                                boot.Imp_Kommentare = reader.GetString(25);
+                                boot.Imp_Kommentare = reader.GetString(24);
                                 boot.Kommentare = boot.Imp_Kommentare;
 
                                 boot.Imp_BoolBezahlt = boot.Bezahlt >= boot.ZuZahlen;
                                 boot.BoolBezahlt = boot.Imp_BoolBezahlt;
+                                Rennen _rennen = RennenLookuptable_Query(boot.RennID);
+                                boot.Bootstyp = _rennen.Bootstyp;
+                                boot.Rennbezeichnung = _rennen.Rennbezeichnung;
                                 boote.Add(boot);
                             }
                         }
@@ -562,7 +562,7 @@ namespace DataAccessLibrary
 
         private static string GetNameByID(int rowID)
         {
-            string personIsAlreadyInDatabaseQuery = "SELECT Name FROM Personen ROWID = '" + rowID + "';";
+            string personIsAlreadyInDatabaseQuery = "SELECT Name FROM Personen WHERE ROWID = '" + rowID + "';";
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())
@@ -581,9 +581,9 @@ namespace DataAccessLibrary
         public static ObservableCollection<BootEditable> GetDatenBearbeiten(bool nurBootemitKommentarewerdenAngezeigtBool)
         {
             string GetAllBoatDataQuery = "select BootsID, Abteilung, "
-                            + "Startnummer, RennID, Bootsname, Verein, "
-                            + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
-                            + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
+                            + "Startnummer, RennID, Bootsname, GesammtVerein, "
+                            + "SteuerlingID, Athlet1ID, Athlet2ID, Athlet3ID, Athlet4ID, Athlet5ID, "
+                            + "Athlet6ID, Athlet7ID, Athlet8ID, Meldername, Melderadresse, "
                             + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
                             + "Bezahlt, ZuZahlen, Kommentare from Boote";
             if (nurBootemitKommentarewerdenAngezeigtBool)
@@ -659,11 +659,14 @@ namespace DataAccessLibrary
                                 boot.Bezahlt = reader.GetDecimal(22);
                                 boot.ZuZahlen = reader.GetDecimal(23);
 
-                                boot.Imp_Kommentare = reader.GetString(25);
+                                boot.Imp_Kommentare = reader.GetString(24);
                                 boot.Kommentare = boot.Imp_Kommentare;
 
                                 boot.Imp_BoolBezahlt = boot.Bezahlt >= boot.ZuZahlen;
                                 boot.BoolBezahlt = boot.Imp_BoolBezahlt;
+                                Rennen _rennen = RennenLookuptable_Query(boot.RennID);
+                                boot.Bootstyp = _rennen.Bootstyp;
+                                boot.Rennbezeichnung = _rennen.Rennbezeichnung;
                                 boote.Add(boot);
                             }
                         }
@@ -677,9 +680,9 @@ namespace DataAccessLibrary
         public static ObservableCollection<BootEditable> GetDatenBearbeiten(int Abteilungsnummer)
         {
             string GetAllBoatDataQuery = "select BootsID, Abteilung, "
-                        + "Startnummer, RennID, Bootsname, Verein, "
-                        + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
-                        + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
+                        + "Startnummer, RennID, Bootsname, GesammtVerein, "
+                        + "SteuerlingID, Athlet1ID, Athlet2ID, Athlet3ID, Athlet4ID, Athlet5ID, "
+                        + "Athlet6ID, Athlet7ID, Athlet8ID, Meldername, Melderadresse, "
                         + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
                         + "Bezahlt, ZuZahlen, Kommentare from Boote where Abteilung = '" + Abteilungsnummer + "';";
             var boote = new ObservableCollection<BootEditable>();
@@ -745,11 +748,14 @@ namespace DataAccessLibrary
                                 boot.Bezahlt = reader.GetDecimal(22);
                                 boot.ZuZahlen = reader.GetDecimal(23);
 
-                                boot.Imp_Kommentare = reader.GetString(25);
+                                boot.Imp_Kommentare = reader.GetString(24);
                                 boot.Kommentare = boot.Imp_Kommentare;
 
                                 boot.Imp_BoolBezahlt = boot.Bezahlt >= boot.ZuZahlen;
                                 boot.BoolBezahlt = boot.Imp_BoolBezahlt;
+                                Rennen _rennen = RennenLookuptable_Query(boot.RennID);
+                                boot.Bootstyp = _rennen.Bootstyp;
+                                boot.Rennbezeichnung = _rennen.Rennbezeichnung;
                                 boote.Add(boot);
                             }
                         }
@@ -763,10 +769,10 @@ namespace DataAccessLibrary
         public static ObservableCollection<Boot> GetBooteBootssuche()
         {
             const string GetAllBoatDataQuery = "select BootsID, Abteilung, Startnummer, "
-                        + "RennID, Verein, Steuerling, Athlet1, Athlet2, "
-                        + "Athlet3, Athlet4, Athlet5, Athlet6, Athlet7, Athlet8, Meldername, "
+                        + "RennID, GesammtVerein, SteuerlingID, Athlet1ID, Athlet2ID, "
+                        + "Athlet3ID, Athlet4ID, Athlet5ID, Athlet6ID, Athlet7ID, Athlet8ID, Meldername, "
                         + "Melderadresse, Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen from Boote;";
+                        + "Bezahlt, ZuZahlen, Bootsname from Boote;";
             var boote = new ObservableCollection<Boot>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -802,7 +808,8 @@ namespace DataAccessLibrary
                                 Meldertel = reader.GetString(19),
                                 Melderfax = reader.GetString(20),
                                 Bezahlt = reader.GetDecimal(21),
-                                ZuZahlen = reader.GetDecimal(22)
+                                ZuZahlen = reader.GetDecimal(22),
+                                Bootsname = reader.GetString(23)
                             };
                             boote.Add(boot);
                         }
@@ -815,10 +822,10 @@ namespace DataAccessLibrary
         public static ObservableCollection<Boot> GetBooteByVereinVereinssuche(string verein)
         {
             string GetAllBoatDataQuery = "select BootsID, Abteilung, Startnummer, "
-                        + "RennID, Verein, Steuerling, Athlet1, Athlet2, "
-                        + "Athlet3, Athlet4, Athlet5, Athlet6, Athlet7, Athlet8, Meldername, "
+                        + "RennID, GesammtVerein, SteuerlingID, Athlet1ID, Athlet2ID, "
+                        + "Athlet3ID, Athlet4ID, Athlet5ID, Athlet6ID, Athlet7ID, Athlet8ID, Meldername, "
                         + "Melderadresse, Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen from Boote where verein = '" + verein + "';";
+                        + "Bezahlt, ZuZahlen, Bootsname from Boote where GesammtVerein = '" + verein + "';";
             var boote = new ObservableCollection<Boot>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -854,7 +861,8 @@ namespace DataAccessLibrary
                                 Meldertel = reader.GetString(19),
                                 Melderfax = reader.GetString(20),
                                 Bezahlt = reader.GetDecimal(21),
-                                ZuZahlen = reader.GetDecimal(22)
+                                ZuZahlen = reader.GetDecimal(22),
+                                Bootsname = reader.GetString(23)
                             };
                             boote.Add(boot);
                         }
@@ -866,9 +874,9 @@ namespace DataAccessLibrary
 
         public static ObservableCollection<Verein> GetVereineVereinssuche()
         {
-            const string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
+            const string GetAllVereineDataQuery = "SELECT GesammtVerein, count(GesammtVerein) AS anzahlBoote, "
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY verein order by count(verein) DESC, verein ASC";
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY GesammtVerein order by count(GesammtVerein) DESC, GesammtVerein ASC";
             var vereine = new ObservableCollection<Verein>();
             Debug.WriteLine(GetAllVereineDataQuery);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
@@ -904,9 +912,9 @@ namespace DataAccessLibrary
 
         public static ObservableCollection<Verein> GetVereineVereinssuche(bool hatBezahlt)
         {
-            string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
+            string GetAllVereineDataQuery = "SELECT GesammtVerein, count(GesammtVerein) AS anzahlBoote, "
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY verein order by count(verein) DESC, verein ASC";
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY GesammtVerein order by count(verein) DESC, GesammtVerein ASC";
             if (hatBezahlt)
             {
                 GetAllVereineDataQuery += " WHERE sum(bezahlt) >= sum(zuZahlen);";
