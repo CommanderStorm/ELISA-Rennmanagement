@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Contacts;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -62,7 +64,7 @@ namespace App1
         {
             if (args.IsSettingsInvoked == true)
             {
-                NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
+                NavView_Navigate("einstellungen", args.RecommendedNavigationTransitionInfo);
             }
             else if (args.InvokedItemContainer != null)
             {
@@ -75,14 +77,21 @@ namespace App1
         private void NavView_Navigate(string navItemTag, NavigationTransitionInfo transitionInfo)
         {
             Type _page = null;
-            if (navItemTag == "settings")
+            if (navItemTag == "einstellungen")
             {
                 _page = typeof(SettingsPage);
             }
             else
             {
-                var item = _pages.FirstOrDefault(p => p.Tag.Equals(navItemTag));
-                _page = item.Page;
+                if (navItemTag == "feedback")
+                {
+                    _ = feedback_test();
+                }
+                else
+                {
+                    var item = _pages.FirstOrDefault(p => p.Tag.Equals(navItemTag));
+                    _page = item.Page;
+                }
             }
             // Get the page type before navigation so you can prevent duplicate
             // entries in the backstack.
@@ -93,6 +102,32 @@ namespace App1
             {
                 ContentFrame.Navigate(_page, null, transitionInfo);
             }
+        }
+
+        private async Task feedback_test()
+        {
+            var contactPicker = new Windows.ApplicationModel.Contacts.ContactPicker();
+            contactPicker.SelectionMode = Windows.ApplicationModel.Contacts.ContactSelectionMode.Fields;
+            contactPicker.DesiredFieldsWithContactFieldType.Add(Windows.ApplicationModel.Contacts.ContactFieldType.Email);
+            Contact contact = await contactPicker.PickContactAsync();
+            _ = ComposeEmail(contact, "FYI: Feedback zu Roseninselachter UWP-App", "");
+        }
+
+        private async Task ComposeEmail(Windows.ApplicationModel.Contacts.Contact recipient,
+    string subject, string messageBody)
+        {
+            var emailMessage = new Windows.ApplicationModel.Email.EmailMessage();
+            emailMessage.Body = messageBody;
+
+            var email = recipient.Emails.FirstOrDefault<Windows.ApplicationModel.Contacts.ContactEmail>();
+            if (email != null)
+            {
+                var emailRecipient = new Windows.ApplicationModel.Email.EmailRecipient(email.Address);
+                emailMessage.To.Add(emailRecipient);
+                emailMessage.Subject = subject;
+            }
+
+            await Windows.ApplicationModel.Email.EmailManager.ShowComposeNewEmailAsync(emailMessage);
         }
 
         private void NavView_BackRequested(NavigationView _,
@@ -132,7 +167,7 @@ namespace App1
             {
                 // SettingsItem is not part of NavView.MenuItems, and doesn't have a Tag.
                 NavView.SelectedItem = (NavigationViewItem)NavView.SettingsItem;
-                NavView.Header = "Settings";
+                NavView.Header = "Einstellungen";
             }
             else if (ContentFrame.SourcePageType != null)
             {

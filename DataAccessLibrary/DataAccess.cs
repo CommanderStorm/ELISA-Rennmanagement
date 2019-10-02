@@ -1,332 +1,10 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 
 namespace DataAccessLibrary
 {
-    public class BootsImport : INotifyPropertyChanged
-    {
-        public int BootsID { get; set; }
-        public int Abteilung { get; set; }
-        public int Startnummer { get; set; }
-        public string Rennbezeichnung { get; set; }
-        public string RennID
-        {
-            get => Imp_RennID;
-            set
-            {
-                if (Imp_RennID != value)
-                {
-                    Imp_RennID = value;
-                    Rennen _tmp = DataAccess.RennenLookuptable_Query(value);
-                    this.Bootstyp = _tmp.Bootstyp;
-                    this.Rennbezeichnung = _tmp.Rennbezeichnung;
-                    this.ZuZahlen = _tmp.ZuZahlen;
-                    this.BoolBezahlt = this.ZuZahlen <= this.Bezahlt;
-                    DataAccess.UpdateBootsImport("RennID", value, this.BootsID);
-                    DataAccess.UpdateBootsImport("Bootstyp", _tmp.Bootstyp, this.BootsID);
-                    DataAccess.UpdateBootsImport("ZuZahlen", _tmp.ZuZahlen, this.BootsID);
-                }
-            }
-        }
-        public string Imp_RennID { get; set; }
-        public string Bootsname
-        {
-            get => Imp_Bootsname;
-            set
-            {
-                if (Imp_Bootsname != value)
-                {
-                    Imp_Bootsname = value;
-                    DataAccess.UpdateBootsImport("Bootsname", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Bootsname { get; set; }
-        public string Verein
-        {
-            get => Imp_Verein;
-            set
-            {
-                if (Imp_Verein != value)
-                {
-                    Imp_Verein = value;
-                    DataAccess.UpdateBootsImport("Verein", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Verein { get; set; }
-        public string Steuerling
-        {
-            get => Imp_Steuerling;
-            set
-            {
-                if (Imp_Steuerling != value)
-                {
-                    Imp_Steuerling = value;
-                    DataAccess.UpdateBootsImport("Steuerling", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Steuerling { get; set; }
-        public string Athlet1
-        {
-            get => Imp_Athlet1;
-            set
-            {
-                if (Imp_Athlet1 != value)
-                {
-                    Imp_Athlet1 = value;
-                    DataAccess.UpdateBootsImport("Athlet1", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Athlet1 { get; set; }
-        public string Athlet2
-        {
-            get => Imp_Athlet2;
-            set
-            {
-                if (Imp_Athlet2 != value)
-                {
-                    Imp_Athlet2 = value;
-                    DataAccess.UpdateBootsImport("Athlet2", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Athlet2 { get; set; }
-        public string Athlet3
-        {
-            get => Imp_Athlet3;
-            set
-            {
-                if (Imp_Athlet3 != value)
-                {
-                    Imp_Athlet3 = value;
-                    DataAccess.UpdateBootsImport("Athlet3", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Athlet3 { get; set; }
-        public string Athlet4
-        {
-            get => Imp_Athlet4;
-            set
-            {
-                if (Imp_Athlet4 != value)
-                {
-                    Imp_Athlet4 = value;
-                    DataAccess.UpdateBootsImport("Athlet4", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Athlet4 { get; set; }
-        public string Athlet5
-        {
-            get => Imp_Athlet5;
-            set
-            {
-                if (Imp_Athlet5 != value)
-                {
-                    Imp_Athlet5 = value;
-                    DataAccess.UpdateBootsImport("Athlet5", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Athlet5 { get; set; }
-        public string Athlet6
-        {
-            get => Imp_Athlet6;
-            set
-            {
-                if (Imp_Athlet6 != value)
-                {
-                    Imp_Athlet6 = value;
-                    DataAccess.UpdateBootsImport("Athlet6", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Athlet6 { get; set; }
-        public string Athlet7
-        {
-            get => Imp_Athlet7;
-            set
-            {
-                if (Imp_Athlet7 != value)
-                {
-                    Imp_Athlet7 = value;
-                    DataAccess.UpdateBootsImport("Athlet7", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Athlet7 { get; set; }
-        public string Athlet8
-        {
-            get => Imp_Athlet8;
-            set
-            {
-                if (Imp_Athlet8 != value)
-                {
-                    Imp_Athlet8 = value;
-                    DataAccess.UpdateBootsImport("Athlet8", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Athlet8 { get; set; }
-        public string Meldername { get; set; }
-        public string Melderadresse { get; set; }
-        public string Melderort { get; set; }
-        public string Melderverein { get; set; }
-        public string Melderemail { get; set; }
-        public string Meldertel { get; set; }
-        public string Melderfax { get; set; }
-        public decimal Bezahlt { get; set; }
-        public decimal ZuZahlen { get; set; }
-        public string Kommentare
-        {
-            get => Imp_Kommentare;
-            set
-            {
-                if (Imp_Kommentare != value)
-                {
-                    Imp_Kommentare = value;
-                    DataAccess.UpdateBootsImport("Kommentare", value, this.BootsID);
-                }
-            }
-        }
-        public string Imp_Kommentare { get; set; }
-        public string Bootstyp { get; set; }
-        public bool BoolBezahlt
-        {
-            get => Imp_BoolBezahlt;
-            set
-            {
-                if (Imp_BoolBezahlt != value)
-                {
-                    Imp_BoolBezahlt = value;
-                    if (value)
-                    {
-                        DataAccess.UpdateBootsImport("Bezahlt", this.ZuZahlen, this.BootsID);
-                    }
-                    else
-                    {
-                        DataAccess.UpdateBootsImport("Bezahlt", 0, this.BootsID);
-                    }
-                }
-            }
-        }
-        public bool Imp_BoolBezahlt { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
-    }
-
-    public class Rennen
-    {
-        public string RennID { get; set; }
-        public string Rennbezeichnung { get; set; }
-        public decimal ZuZahlen { get; set; }
-        public string Bootstyp { get; set; }
-    }
-
-    public class Boot : INotifyPropertyChanged
-    {
-        public int BootsID { get; set; }
-        public int Abteilung { get; set; }
-
-        public int Startnummer { get; set; }
-        public string Rennbezeichnung { get; set; }
-        public string Verein { get; set; }
-        public string Steuerling { get; set; }
-        public string Athlet1 { get; set; }
-        public string Athlet2 { get; set; }
-        public string Athlet3 { get; set; }
-        public string Athlet4 { get; set; }
-        public string Athlet5 { get; set; }
-        public string Athlet6 { get; set; }
-        public string Athlet7 { get; set; }
-        public string Athlet8 { get; set; }
-        public decimal Bezahlt { get; set; }
-        public decimal ZuZahlen { get; set; }
-        public string Meldername { get; set; }
-        public string Melderadresse { get; set; }
-        public string Melderort { get; set; }
-        public string Melderverein { get; set; }
-        public string Melderemail { get; set; }
-        public string Meldertel { get; set; }
-        public string Melderfax { get; set; }
-        public string RennID { get; set; }
-        public bool BoolBezahlt
-        {
-            get => Imp_BoolBezahlt;
-            set
-            {
-                if (Imp_BoolBezahlt != value)
-                {
-                    Imp_BoolBezahlt = value;
-                    if (value)
-                    {
-                        DataAccess.UpdateBoot("Bezahlt", this.ZuZahlen, this.BootsID);
-                    }
-                    else
-                    {
-                        DataAccess.UpdateBoot("Bezahlt", 0, this.BootsID);
-                    }
-                }
-            }
-        }
-        public bool Imp_BoolBezahlt { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
-    }
-
-    public class Verein : INotifyPropertyChanged
-    {
-        public string Vereinsname { get; set; }
-        public int AnzahlBoote { get; set; }
-        public decimal BisherGesammtBezahlt { get; set; }
-        public decimal GesammtZuZahlen { get; set; }
-        public decimal Total { get; set; }
-        public ObservableCollection<Boot> VereinsBoote { get; set; }
-        public bool BoolBezahlt
-        {
-            get => Imp_BoolBezahlt;
-            set
-            {
-                if (Imp_BoolBezahlt != value)
-                {
-                    Imp_BoolBezahlt = value;
-                    DataAccess.UpdateBootsBezahlstatus(VereinsBoote, value);
-                }
-            }
-        }
-        public bool Imp_BoolBezahlt { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
-    }
-
     public static class DataAccess
     {
         private static readonly String sqliteConnectionString = "Filename=boote.db";
@@ -337,26 +15,25 @@ namespace DataAccessLibrary
                 new SqliteConnection(sqliteConnectionString))
             {
                 db.Open();
-                String CreateBoote = "CREATE TABLE IF NOT EXISTS Boote (BootsID INTEGER, Abteilung INTEGER, Startnummer INTEGER, "
-                        + "Rennbezeichnung TEXT, RennID TEXT, Verein TEXT, Steuerling TEXT, Athlet1 TEXT, Athlet2 TEXT, "
-                        + "Athlet3 TEXT, Athlet4 TEXT, Athlet5 TEXT, Athlet6 TEXT, Athlet7 TEXT, Athlet8 TEXT, Meldername TEXT, "
-                        + "Melderadresse TEXT, Melderort TEXT, Melderverein TEXT, Melderemail TEXT, Meldertel TEXT, Melderfax TEXT, "
-                        + "Bezahlt REAL, ZuZahlen REAL);";
+                String CreateBoote = "CREATE TABLE IF NOT EXISTS Boote ('BootsID' INTEGER NOT NULL UNIQUE, 'Abteilung' INTEGER, "
+                    + "'Startnummer' INTEGER, 'RennID' TEXT, 'Bootsname' TEXT, 'GesammtVerein' TEXT, "
+                    + "'SteuerlingID' INTEGER, 'Athlet1ID'   INTEGER, 'Athlet2ID'   INTEGER, 'Athlet3ID'   INTEGER, 'Athlet4ID'   INTEGER, "
+                    + "'Athlet5ID'   INTEGER, 'Athlet6ID'   INTEGER, 'Athlet7ID'   INTEGER, 'Athlet8ID'   INTEGER, 'Meldername' TEXT, "
+                    + "'Melderadresse' TEXT, 'Melderort' TEXT, 'Melderverein'  TEXT, 'Melderemail'   TEXT, 'Meldertel' TEXT, "
+                    + "'Melderfax' TEXT, 'Bezahlt'   REAL, 'ZuZahlen'  REAL, 'Kommentare' TEXT, "
+                    + "PRIMARY KEY('BootsID'))";
+
                 using (SqliteCommand CreateBooteCommand = new SqliteCommand(CreateBoote, db))
                 {
                     CreateBooteCommand.ExecuteReader();
                 }
 
-                String CreateProtoBoote = "CREATE TABLE IF NOT EXISTS ProtoBoote (BootsID INTEGER, Abteilung INTEGER, "
-                        + "Startnummer INTEGER, Rennbezeichnung TEXT, RennID TEXT, Bootsname TEXT, Verein TEXT, "
-                        + "Steuerling TEXT, Athlet1 TEXT, Athlet2 TEXT, Athlet3 TEXT, Athlet4 TEXT, Athlet5 TEXT, "
-                        + "Athlet6 TEXT, Athlet7 TEXT, Athlet8 TEXT, Meldername TEXT, Melderadresse TEXT, "
-                        + "Melderort TEXT, Melderverein TEXT, Melderemail TEXT, Meldertel TEXT, Melderfax TEXT, "
-                        + "Bezahlt REAL, ZuZahlen REAL, Kommentare TEXT, Bootstyp TEXT);";
+                String CreatePersonen = "CREATE TABLE IF NOT EXISTS Personen ('Name' TEXT, "
+                    + "'Verein' TEXT); ";
 
-                using (SqliteCommand CreateProtoBooteCommand = new SqliteCommand(CreateProtoBoote, db))
+                using (SqliteCommand CreateRennenLookuptableCommand = new SqliteCommand(CreatePersonen, db))
                 {
-                    CreateProtoBooteCommand.ExecuteReader();
+                    CreateRennenLookuptableCommand.ExecuteReader();
                 }
 
                 String CreateRennenLookuptable = "CREATE TABLE IF NOT EXISTS RennenLookuptable ('RennNr'  TEXT, "
@@ -564,27 +241,7 @@ namespace DataAccessLibrary
         public static void Reset()
         {
             ResetBoote();
-            ResetProtoBoote();
-        }
-
-        public static void ResetProtoBoote()
-        {
-            using (SqliteConnection db = new SqliteConnection(sqliteConnectionString))
-            {
-                db.Open();
-
-                using (SqliteCommand insertCommand = new SqliteCommand())
-                {
-                    insertCommand.Connection = db;
-
-                    // Use parameterized query to prevent SQL injection attacks
-                    insertCommand.CommandText = "DROP TABLE ProtoBoote;";
-                    insertCommand.ExecuteReader();
-
-                    db.Close();
-                }
-            }
-            InitializeDatabase();
+            ResetPersonen();
         }
 
         public static void ResetBoote()
@@ -607,12 +264,36 @@ namespace DataAccessLibrary
             InitializeDatabase();
         }
 
+        public static void ResetPersonen()
+        {
+            using (SqliteConnection db = new SqliteConnection(sqliteConnectionString))
+            {
+                db.Open();
 
-        public static void AddData(int BootsID, int Abteilung, int Startnummer, string Rennbezeichnung, string RennID, string Bootsname, string Verein, string Steuerling, string Athlet1, string Athlet2, string Athlet3, string Athlet4, string Athlet5, string Athlet6, string Athlet7, string Athlet8, string Meldername, string Melderadresse, string Melderort, string Melderverein, string Melderemail, string Meldertel, string Melderfax, decimal Bezahlt, string Kommentare)
+                using (SqliteCommand insertCommand = new SqliteCommand())
+                {
+                    insertCommand.Connection = db;
+
+                    // Use parameterized query to prevent SQL injection attacks
+                    insertCommand.CommandText = "DROP TABLE Personen;";
+                    insertCommand.ExecuteReader();
+
+                    db.Close();
+                }
+            }
+            InitializeDatabase();
+        }
+
+
+        public static void AddData(int BootsID, int Abteilung, int Startnummer,
+            string RennID, string Bootsname, string Verein, string Steuerling, string SteuerlingVerein,
+            string Athlet1, string Athlet1Verein, string Athlet2, string Athlet2Verein, string Athlet3, string Athlet3Verein,
+            string Athlet4, string Athlet4Verein, string Athlet5, string Athlet5Verein, string Athlet6, string Athlet6Verein,
+            string Athlet7, string Athlet7Verein, string Athlet8, string Athlet8Verein,
+            string Meldername, string Melderadresse, string Melderort, string Melderverein, string Melderemail, string Meldertel, string Melderfax,
+            decimal Bezahlt, string Kommentare)
         {
             Rennen temprennen = RennenLookuptable_Query(RennID);
-            string _Bootstyp = temprennen.Bootstyp;
-            string _Rennbezeichnung = temprennen.Rennbezeichnung + Rennbezeichnung;
             decimal _ZuZahlen = temprennen.ZuZahlen;
             /*
             Debug.WriteLine("BootID: " + BootsID);
@@ -639,6 +320,15 @@ namespace DataAccessLibrary
             Debug.WriteLine("Melderfax: " + Melderfax);
             Debug.WriteLine("Kommentare: " + Kommentare);
             */
+            int SteuerlingID = GetOrSetPersonenID(Steuerling, SteuerlingVerein);
+            int Athlet1ID = GetOrSetPersonenID(Athlet1, Athlet1Verein);
+            int Athlet2ID = GetOrSetPersonenID(Athlet2, Athlet2Verein);
+            int Athlet3ID = GetOrSetPersonenID(Athlet3, Athlet3Verein);
+            int Athlet4ID = GetOrSetPersonenID(Athlet4, Athlet4Verein);
+            int Athlet5ID = GetOrSetPersonenID(Athlet5, Athlet5Verein);
+            int Athlet6ID = GetOrSetPersonenID(Athlet6, Athlet6Verein);
+            int Athlet7ID = GetOrSetPersonenID(Athlet7, Athlet7Verein);
+            int Athlet8ID = GetOrSetPersonenID(Athlet8, Athlet8Verein);
             using (SqliteConnection db = new SqliteConnection(sqliteConnectionString))
             {
                 db.Open();
@@ -648,31 +338,112 @@ namespace DataAccessLibrary
                     insertCommand.Connection = db;
 
                     // Use parameterized query to prevent SQL injection attacks
-                    insertCommand.CommandText = "INSERT INTO ProtoBoote (BootsID, Abteilung, "
-                        + "Startnummer, Rennbezeichnung, RennID, Bootsname, Verein, "
-                        + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
-                        + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
+                    insertCommand.CommandText = "INSERT INTO Boote (BootsID, Abteilung, "
+                        + "Startnummer, RennID, Bootsname, GesammtVerein, "
+                        + "SteuerlingID, Athlet1ID, Athlet2ID, Athlet3ID, Athlet4ID, Athlet5ID, "
+                        + "Athlet6ID, Athlet7ID, Athlet8ID, Meldername, Melderadresse, "
                         + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen, Kommentare, Bootstyp) "
+                        + "Bezahlt, ZuZahlen, Kommentare) "
 
                         + "VALUES('" + BootsID + "', '" + Abteilung
-                        + "', '" + Startnummer + "', '" + _Rennbezeichnung
+                        + "', '" + Startnummer
                         + "', '" + RennID + "', '" + Bootsname
-                        + "', '" + Verein + "', '" + Steuerling
-                        + "', '" + Athlet1 + "', '" + Athlet2
-                        + "', '" + Athlet3 + "', '" + Athlet4
-                        + "', '" + Athlet5 + "', '" + Athlet6
-                        + "', '" + Athlet7 + "', '" + Athlet8
+                        + "', '" + Verein + "', '" + SteuerlingID
+                        + "', '" + Athlet1ID + "', '" + Athlet2ID
+                        + "', '" + Athlet3ID + "', '" + Athlet4ID
+                        + "', '" + Athlet5ID + "', '" + Athlet6ID
+                        + "', '" + Athlet7ID + "', '" + Athlet8ID
                         + "', '" + Meldername + "', '" + Melderadresse
                         + "', '" + Melderort + "', '" + Melderverein
                         + "', '" + Melderemail + "', '" + Meldertel
                         + "', '" + Melderfax + "', '" + Bezahlt
                         + "', '" + _ZuZahlen + "', '" + Kommentare
-                        + "', '" + _Bootstyp + "'); ";
+                        + "'); ";
                     Debug.WriteLine(insertCommand.CommandText);
                     insertCommand.ExecuteReader();
 
                     db.Close();
+                }
+            }
+        }
+
+        private static int GetOrSetPersonenID(string personenName, string personenVerein)
+        {
+            if (PersonIsNOTInDatabase(personenName, personenVerein))
+            {
+                using (SqliteConnection db = new SqliteConnection(sqliteConnectionString))
+                {
+                    db.Open();
+
+                    using (SqliteCommand insertCommand = new SqliteCommand())
+                    {
+                        insertCommand.Connection = db;
+
+                        // Use parameterized query to prevent SQL injection attacks
+                        insertCommand.CommandText = "INSERT INTO Personen (Name, "
+                            + "Verein) "
+
+                            + "VALUES('" + personenName + "', '" + personenVerein + "'); ";
+                        Debug.WriteLine(insertCommand.CommandText);
+                        insertCommand.ExecuteReader();
+
+                        db.Close();
+                    }
+                }
+            }
+            return GetPersonenID(personenName, personenVerein);
+        }
+
+        private static int GetPersonenID(string personenName, string personenVerein)
+        {
+            string personIsAlreadyInDatabaseGetIDQuery = "SELECT ROWID FROM Personen WHERE Name = '" + personenName + "' AND GesammtVerein = '" + personenVerein + "';";
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = personIsAlreadyInDatabaseGetIDQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        return reader.GetInt32(0);
+                    }
+                }
+            }
+        }
+
+        private static bool PersonIsNOTInDatabase(string personenName, string personenVerein)
+        {
+            string personIsAlreadyInDatabaseQuery = "SELECT count(*) FROM Personen WHERE Name = '" + personenName + "' AND Verein = '" + personenVerein + "';";
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = personIsAlreadyInDatabaseQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        return reader.GetInt32(0) == 0;
+                    }
+                }
+            }
+        }
+
+        private static bool PersonDoesNOTmatchDatabase(string personenName, int rowID)
+        {
+            string personIsAlreadyInDatabaseQuery = "SELECT count(*) FROM Personen WHERE Name = '" + personenName + "' AND ROWID = '" + rowID + "';";
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = personIsAlreadyInDatabaseQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        return reader.GetInt32(0) == 0;
+                    }
                 }
             }
         }
@@ -701,15 +472,15 @@ namespace DataAccessLibrary
         }
 
 
-        public static ObservableCollection<BootsImport> GetImportdatenBearbeiten()
+        public static ObservableCollection<BootEditable> GetDatenBearbeiten()
         {
             const string GetAllBoatDataQuery = "select BootsID, Abteilung, "
-                        + "Startnummer, Rennbezeichnung, RennID, Bootsname, Verein, "
-                        + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
-                        + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
+                        + "Startnummer, RennID, Bootsname, GesammtVerein, "
+                        + "SteuerlingID, Athlet1ID, Athlet2ID, Athlet3ID, Athlet4ID, Athlet5ID, "
+                        + "Athlet6ID, Athlet7ID, Athlet8ID, Meldername, Melderadresse, "
                         + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen, Kommentare, Bootstyp from ProtoBoote;";
-            var boote = new ObservableCollection<BootsImport>();
+                        + "Bezahlt, ZuZahlen, Kommentare from Boote;";
+            var boote = new ObservableCollection<BootEditable>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())
@@ -720,66 +491,66 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            BootsImport boot = new BootsImport();
+                            BootEditable boot = new BootEditable();
                             {
                                 boot.BootsID = reader.GetInt32(0);
                                 boot.Abteilung = reader.GetInt32(1);
                                 boot.Startnummer = reader.GetInt32(2);
-                                boot.Rennbezeichnung = reader.GetString(3);
 
-                                boot.Imp_RennID = reader.GetString(4);
+                                boot.Imp_RennID = reader.GetString(3);
                                 boot.RennID = boot.Imp_RennID;
 
-                                boot.Imp_Bootsname = reader.GetString(5);
+                                boot.Imp_Bootsname = reader.GetString(4);
                                 boot.Bootsname = boot.Imp_Bootsname;
 
-                                boot.Imp_Verein = reader.GetString(6);
+                                boot.Imp_Verein = reader.GetString(5);
                                 boot.Verein = boot.Imp_Verein;
 
-                                boot.Imp_Steuerling = reader.GetString(7);
-                                boot.Steuerling = boot.Imp_Steuerling;
+                                boot.SteuerlingID = reader.GetInt32(6);
+                                boot.Steuerling = GetNameByID(boot.SteuerlingID);
 
-                                boot.Imp_Athlet1 = reader.GetString(8);
-                                boot.Athlet1 = boot.Imp_Athlet1;
+                                boot.Athlet1ID = reader.GetInt32(7);
+                                boot.Athlet1 = GetNameByID(boot.Athlet1ID);
 
-                                boot.Imp_Athlet2 = reader.GetString(9);
-                                boot.Athlet2 = boot.Imp_Athlet2;
+                                boot.Athlet2ID = reader.GetInt32(8);
+                                boot.Athlet2 = GetNameByID(boot.Athlet2ID);
 
-                                boot.Imp_Athlet3 = reader.GetString(10);
-                                boot.Athlet3 = boot.Imp_Athlet3;
+                                boot.Athlet3ID = reader.GetInt32(9);
+                                boot.Athlet3 = GetNameByID(boot.Athlet3ID);
 
-                                boot.Imp_Athlet4 = reader.GetString(11);
-                                boot.Athlet4 = boot.Imp_Athlet4;
+                                boot.Athlet4ID = reader.GetInt32(10);
+                                boot.Athlet4 = GetNameByID(boot.Athlet4ID);
 
-                                boot.Imp_Athlet5 = reader.GetString(12);
-                                boot.Athlet5 = boot.Imp_Athlet5;
+                                boot.Athlet5ID = reader.GetInt32(11);
+                                boot.Athlet5 = GetNameByID(boot.Athlet5ID);
 
-                                boot.Imp_Athlet6 = reader.GetString(13);
-                                boot.Athlet6 = boot.Imp_Athlet6;
+                                boot.Athlet6ID = reader.GetInt32(12);
+                                boot.Athlet6 = GetNameByID(boot.Athlet6ID);
 
-                                boot.Imp_Athlet7 = reader.GetString(14);
-                                boot.Athlet7 = boot.Imp_Athlet7;
+                                boot.Athlet7ID = reader.GetInt32(13);
+                                boot.Athlet7 = GetNameByID(boot.Athlet7ID);
 
-                                boot.Imp_Athlet8 = reader.GetString(15);
-                                boot.Athlet8 = boot.Imp_Athlet8;
+                                boot.Athlet8ID = reader.GetInt32(14);
+                                boot.Athlet8 = GetNameByID(boot.Athlet8ID);
 
-                                boot.Meldername = reader.GetString(16);
-                                boot.Melderadresse = reader.GetString(17);
-                                boot.Melderort = reader.GetString(18);
-                                boot.Melderverein = reader.GetString(19);
-                                boot.Melderemail = reader.GetString(20);
-                                boot.Meldertel = reader.GetString(21);
-                                boot.Melderfax = reader.GetString(22);
-                                boot.Bezahlt = reader.GetDecimal(23);
-                                boot.ZuZahlen = reader.GetDecimal(24);
+                                boot.Meldername = reader.GetString(15);
+                                boot.Melderadresse = reader.GetString(16);
+                                boot.Melderort = reader.GetString(17);
+                                boot.Melderverein = reader.GetString(18);
+                                boot.Melderemail = reader.GetString(19);
+                                boot.Meldertel = reader.GetString(20);
+                                boot.Melderfax = reader.GetString(21);
+                                boot.Bezahlt = reader.GetDecimal(22);
+                                boot.ZuZahlen = reader.GetDecimal(23);
 
-                                boot.Imp_Kommentare = reader.GetString(25);
+                                boot.Imp_Kommentare = reader.GetString(24);
                                 boot.Kommentare = boot.Imp_Kommentare;
-
-                                boot.Bootstyp = reader.GetString(26);
 
                                 boot.Imp_BoolBezahlt = boot.Bezahlt >= boot.ZuZahlen;
                                 boot.BoolBezahlt = boot.Imp_BoolBezahlt;
+                                Rennen _rennen = RennenLookuptable_Query(boot.RennID);
+                                boot.Bootstyp = _rennen.Bootstyp;
+                                boot.Rennbezeichnung = _rennen.Rennbezeichnung;
                                 boote.Add(boot);
                             }
                         }
@@ -789,14 +560,32 @@ namespace DataAccessLibrary
             return boote;
         }
 
-        public static ObservableCollection<BootsImport> GetImportdatenBearbeiten(bool nurBootemitKommentarewerdenAngezeigtBool)
+        private static string GetNameByID(int rowID)
+        {
+            string personIsAlreadyInDatabaseQuery = "SELECT Name FROM Personen WHERE ROWID = '" + rowID + "';";
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = personIsAlreadyInDatabaseQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        return reader.GetString(0);
+                    }
+                }
+            }
+        }
+
+        public static ObservableCollection<BootEditable> GetDatenBearbeiten(bool nurBootemitKommentarewerdenAngezeigtBool)
         {
             string GetAllBoatDataQuery = "select BootsID, Abteilung, "
-                            + "Startnummer, Rennbezeichnung, RennID, Bootsname, Verein, "
-                            + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
-                            + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
+                            + "Startnummer, RennID, Bootsname, GesammtVerein, "
+                            + "SteuerlingID, Athlet1ID, Athlet2ID, Athlet3ID, Athlet4ID, Athlet5ID, "
+                            + "Athlet6ID, Athlet7ID, Athlet8ID, Meldername, Melderadresse, "
                             + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                            + "Bezahlt, ZuZahlen, Kommentare, Bootstyp from ProtoBoote";
+                            + "Bezahlt, ZuZahlen, Kommentare from Boote";
             if (nurBootemitKommentarewerdenAngezeigtBool)
             {
                 GetAllBoatDataQuery += " where NOT Kommentare = '';";
@@ -806,7 +595,7 @@ namespace DataAccessLibrary
                 GetAllBoatDataQuery += ";";
             }
 
-            var boote = new ObservableCollection<BootsImport>();
+            var boote = new ObservableCollection<BootEditable>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())
@@ -818,66 +607,66 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            BootsImport boot = new BootsImport();
+                            BootEditable boot = new BootEditable();
                             {
                                 boot.BootsID = reader.GetInt32(0);
                                 boot.Abteilung = reader.GetInt32(1);
                                 boot.Startnummer = reader.GetInt32(2);
-                                boot.Rennbezeichnung = reader.GetString(3);
 
-                                boot.Imp_RennID = reader.GetString(4);
+                                boot.Imp_RennID = reader.GetString(3);
                                 boot.RennID = boot.Imp_RennID;
 
-                                boot.Imp_Bootsname = reader.GetString(5);
+                                boot.Imp_Bootsname = reader.GetString(4);
                                 boot.Bootsname = boot.Imp_Bootsname;
 
-                                boot.Imp_Verein = reader.GetString(6);
+                                boot.Imp_Verein = reader.GetString(5);
                                 boot.Verein = boot.Imp_Verein;
 
-                                boot.Imp_Steuerling = reader.GetString(7);
-                                boot.Steuerling = boot.Imp_Steuerling;
+                                boot.SteuerlingID = reader.GetInt32(6);
+                                boot.Steuerling = GetNameByID(boot.SteuerlingID);
 
-                                boot.Imp_Athlet1 = reader.GetString(8);
-                                boot.Athlet1 = boot.Imp_Athlet1;
+                                boot.Athlet1ID = reader.GetInt32(7);
+                                boot.Athlet1 = GetNameByID(boot.Athlet1ID);
 
-                                boot.Imp_Athlet2 = reader.GetString(9);
-                                boot.Athlet2 = boot.Imp_Athlet2;
+                                boot.Athlet2ID = reader.GetInt32(8);
+                                boot.Athlet2 = GetNameByID(boot.Athlet2ID);
 
-                                boot.Imp_Athlet3 = reader.GetString(10);
-                                boot.Athlet3 = boot.Imp_Athlet3;
+                                boot.Athlet3ID = reader.GetInt32(9);
+                                boot.Athlet3 = GetNameByID(boot.Athlet3ID);
 
-                                boot.Imp_Athlet4 = reader.GetString(11);
-                                boot.Athlet4 = boot.Imp_Athlet4;
+                                boot.Athlet4ID = reader.GetInt32(10);
+                                boot.Athlet4 = GetNameByID(boot.Athlet4ID);
 
-                                boot.Imp_Athlet5 = reader.GetString(12);
-                                boot.Athlet5 = boot.Imp_Athlet5;
+                                boot.Athlet5ID = reader.GetInt32(11);
+                                boot.Athlet5 = GetNameByID(boot.Athlet5ID);
 
-                                boot.Imp_Athlet6 = reader.GetString(13);
-                                boot.Athlet6 = boot.Imp_Athlet6;
+                                boot.Athlet6ID = reader.GetInt32(12);
+                                boot.Athlet6 = GetNameByID(boot.Athlet6ID);
 
-                                boot.Imp_Athlet7 = reader.GetString(14);
-                                boot.Athlet7 = boot.Imp_Athlet7;
+                                boot.Athlet7ID = reader.GetInt32(13);
+                                boot.Athlet7 = GetNameByID(boot.Athlet7ID);
 
-                                boot.Imp_Athlet8 = reader.GetString(15);
-                                boot.Athlet8 = boot.Imp_Athlet8;
+                                boot.Athlet8ID = reader.GetInt32(14);
+                                boot.Athlet8 = GetNameByID(boot.Athlet8ID);
 
-                                boot.Meldername = reader.GetString(16);
-                                boot.Melderadresse = reader.GetString(17);
-                                boot.Melderort = reader.GetString(18);
-                                boot.Melderverein = reader.GetString(19);
-                                boot.Melderemail = reader.GetString(20);
-                                boot.Meldertel = reader.GetString(21);
-                                boot.Melderfax = reader.GetString(22);
-                                boot.Bezahlt = reader.GetDecimal(23);
-                                boot.ZuZahlen = reader.GetDecimal(24);
+                                boot.Meldername = reader.GetString(15);
+                                boot.Melderadresse = reader.GetString(16);
+                                boot.Melderort = reader.GetString(17);
+                                boot.Melderverein = reader.GetString(18);
+                                boot.Melderemail = reader.GetString(19);
+                                boot.Meldertel = reader.GetString(20);
+                                boot.Melderfax = reader.GetString(21);
+                                boot.Bezahlt = reader.GetDecimal(22);
+                                boot.ZuZahlen = reader.GetDecimal(23);
 
-                                boot.Imp_Kommentare = reader.GetString(25);
+                                boot.Imp_Kommentare = reader.GetString(24);
                                 boot.Kommentare = boot.Imp_Kommentare;
-
-                                boot.Bootstyp = reader.GetString(26);
 
                                 boot.Imp_BoolBezahlt = boot.Bezahlt >= boot.ZuZahlen;
                                 boot.BoolBezahlt = boot.Imp_BoolBezahlt;
+                                Rennen _rennen = RennenLookuptable_Query(boot.RennID);
+                                boot.Bootstyp = _rennen.Bootstyp;
+                                boot.Rennbezeichnung = _rennen.Rennbezeichnung;
                                 boote.Add(boot);
                             }
                         }
@@ -888,15 +677,15 @@ namespace DataAccessLibrary
         }
 
 
-        public static ObservableCollection<BootsImport> GetImportdatenBearbeiten(int Abteilungsnummer)
+        public static ObservableCollection<BootEditable> GetDatenBearbeiten(int Abteilungsnummer)
         {
             string GetAllBoatDataQuery = "select BootsID, Abteilung, "
-                        + "Startnummer, Rennbezeichnung, RennID, Bootsname, Verein, "
-                        + "Steuerling, Athlet1, Athlet2, Athlet3, Athlet4, Athlet5, "
-                        + "Athlet6, Athlet7, Athlet8, Meldername, Melderadresse, "
+                        + "Startnummer, RennID, Bootsname, GesammtVerein, "
+                        + "SteuerlingID, Athlet1ID, Athlet2ID, Athlet3ID, Athlet4ID, Athlet5ID, "
+                        + "Athlet6ID, Athlet7ID, Athlet8ID, Meldername, Melderadresse, "
                         + "Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen, Kommentare, Bootstyp from ProtoBoote where Abteilung = '" + Abteilungsnummer + "';";
-            var boote = new ObservableCollection<BootsImport>();
+                        + "Bezahlt, ZuZahlen, Kommentare from Boote where Abteilung = '" + Abteilungsnummer + "';";
+            var boote = new ObservableCollection<BootEditable>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())
@@ -907,66 +696,66 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            BootsImport boot = new BootsImport();
+                            BootEditable boot = new BootEditable();
                             {
                                 boot.BootsID = reader.GetInt32(0);
                                 boot.Abteilung = reader.GetInt32(1);
                                 boot.Startnummer = reader.GetInt32(2);
-                                boot.Rennbezeichnung = reader.GetString(3);
 
-                                boot.Imp_RennID = reader.GetString(4);
+                                boot.Imp_RennID = reader.GetString(3);
                                 boot.RennID = boot.Imp_RennID;
 
-                                boot.Imp_Bootsname = reader.GetString(5);
+                                boot.Imp_Bootsname = reader.GetString(4);
                                 boot.Bootsname = boot.Imp_Bootsname;
 
-                                boot.Imp_Verein = reader.GetString(6);
+                                boot.Imp_Verein = reader.GetString(5);
                                 boot.Verein = boot.Imp_Verein;
 
-                                boot.Imp_Steuerling = reader.GetString(7);
-                                boot.Steuerling = boot.Imp_Steuerling;
+                                boot.SteuerlingID = reader.GetInt32(6);
+                                boot.Steuerling = GetNameByID(boot.SteuerlingID);
 
-                                boot.Imp_Athlet1 = reader.GetString(8);
-                                boot.Athlet1 = boot.Imp_Athlet1;
+                                boot.Athlet1ID = reader.GetInt32(7);
+                                boot.Athlet1 = GetNameByID(boot.Athlet1ID);
 
-                                boot.Imp_Athlet2 = reader.GetString(9);
-                                boot.Athlet2 = boot.Imp_Athlet2;
+                                boot.Athlet2ID = reader.GetInt32(8);
+                                boot.Athlet2 = GetNameByID(boot.Athlet2ID);
 
-                                boot.Imp_Athlet3 = reader.GetString(10);
-                                boot.Athlet3 = boot.Imp_Athlet3;
+                                boot.Athlet3ID = reader.GetInt32(9);
+                                boot.Athlet3 = GetNameByID(boot.Athlet3ID);
 
-                                boot.Imp_Athlet4 = reader.GetString(11);
-                                boot.Athlet4 = boot.Imp_Athlet4;
+                                boot.Athlet4ID = reader.GetInt32(10);
+                                boot.Athlet4 = GetNameByID(boot.Athlet4ID);
 
-                                boot.Imp_Athlet5 = reader.GetString(12);
-                                boot.Athlet5 = boot.Imp_Athlet5;
+                                boot.Athlet5ID = reader.GetInt32(11);
+                                boot.Athlet5 = GetNameByID(boot.Athlet5ID);
 
-                                boot.Imp_Athlet6 = reader.GetString(13);
-                                boot.Athlet6 = boot.Imp_Athlet6;
+                                boot.Athlet6ID = reader.GetInt32(12);
+                                boot.Athlet6 = GetNameByID(boot.Athlet6ID);
 
-                                boot.Imp_Athlet7 = reader.GetString(14);
-                                boot.Athlet7 = boot.Imp_Athlet7;
+                                boot.Athlet7ID = reader.GetInt32(13);
+                                boot.Athlet7 = GetNameByID(boot.Athlet7ID);
 
-                                boot.Imp_Athlet8 = reader.GetString(15);
-                                boot.Athlet8 = boot.Imp_Athlet8;
+                                boot.Athlet8ID = reader.GetInt32(14);
+                                boot.Athlet8 = GetNameByID(boot.Athlet8ID);
 
-                                boot.Meldername = reader.GetString(16);
-                                boot.Melderadresse = reader.GetString(17);
-                                boot.Melderort = reader.GetString(18);
-                                boot.Melderverein = reader.GetString(19);
-                                boot.Melderemail = reader.GetString(20);
-                                boot.Meldertel = reader.GetString(21);
-                                boot.Melderfax = reader.GetString(22);
-                                boot.Bezahlt = reader.GetDecimal(23);
-                                boot.ZuZahlen = reader.GetDecimal(24);
+                                boot.Meldername = reader.GetString(15);
+                                boot.Melderadresse = reader.GetString(16);
+                                boot.Melderort = reader.GetString(17);
+                                boot.Melderverein = reader.GetString(18);
+                                boot.Melderemail = reader.GetString(19);
+                                boot.Meldertel = reader.GetString(20);
+                                boot.Melderfax = reader.GetString(21);
+                                boot.Bezahlt = reader.GetDecimal(22);
+                                boot.ZuZahlen = reader.GetDecimal(23);
 
-                                boot.Imp_Kommentare = reader.GetString(25);
+                                boot.Imp_Kommentare = reader.GetString(24);
                                 boot.Kommentare = boot.Imp_Kommentare;
-
-                                boot.Bootstyp = reader.GetString(26);
 
                                 boot.Imp_BoolBezahlt = boot.Bezahlt >= boot.ZuZahlen;
                                 boot.BoolBezahlt = boot.Imp_BoolBezahlt;
+                                Rennen _rennen = RennenLookuptable_Query(boot.RennID);
+                                boot.Bootstyp = _rennen.Bootstyp;
+                                boot.Rennbezeichnung = _rennen.Rennbezeichnung;
                                 boote.Add(boot);
                             }
                         }
@@ -980,10 +769,10 @@ namespace DataAccessLibrary
         public static ObservableCollection<Boot> GetBooteBootssuche()
         {
             const string GetAllBoatDataQuery = "select BootsID, Abteilung, Startnummer, "
-                        + "Rennbezeichnung, RennID, Verein, Steuerling, Athlet1, Athlet2, "
-                        + "Athlet3, Athlet4, Athlet5, Athlet6, Athlet7, Athlet8, Meldername, "
+                        + "RennID, GesammtVerein, SteuerlingID, Athlet1ID, Athlet2ID, "
+                        + "Athlet3ID, Athlet4ID, Athlet5ID, Athlet6ID, Athlet7ID, Athlet8ID, Meldername, "
                         + "Melderadresse, Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen from Boote;";
+                        + "Bezahlt, ZuZahlen, Bootsname from Boote;";
             var boote = new ObservableCollection<Boot>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -1000,27 +789,27 @@ namespace DataAccessLibrary
                                 BootsID = reader.GetInt32(0),
                                 Abteilung = reader.GetInt32(1),
                                 Startnummer = reader.GetInt32(2),
-                                Rennbezeichnung = reader.GetString(3),
-                                RennID = reader.GetString(4),
-                                Verein = reader.GetString(5),
-                                Steuerling = reader.GetString(6),
-                                Athlet1 = reader.GetString(7),
-                                Athlet2 = reader.GetString(8),
-                                Athlet3 = reader.GetString(9),
-                                Athlet4 = reader.GetString(10),
-                                Athlet5 = reader.GetString(11),
-                                Athlet6 = reader.GetString(12),
-                                Athlet7 = reader.GetString(13),
-                                Athlet8 = reader.GetString(14),
-                                Meldername = reader.GetString(15),
-                                Melderadresse = reader.GetString(16),
-                                Melderort = reader.GetString(17),
-                                Melderverein = reader.GetString(18),
-                                Melderemail = reader.GetString(19),
-                                Meldertel = reader.GetString(20),
-                                Melderfax = reader.GetString(21),
-                                Bezahlt = reader.GetDecimal(22),
-                                ZuZahlen = reader.GetDecimal(23)
+                                RennID = reader.GetString(3),
+                                Verein = reader.GetString(4),
+                                Steuerling = GetNameByID(reader.GetInt32(5)),
+                                Athlet1 = GetNameByID(reader.GetInt32(6)),
+                                Athlet2 = GetNameByID(reader.GetInt32(7)),
+                                Athlet3 = GetNameByID(reader.GetInt32(8)),
+                                Athlet4 = GetNameByID(reader.GetInt32(9)),
+                                Athlet5 = GetNameByID(reader.GetInt32(10)),
+                                Athlet6 = GetNameByID(reader.GetInt32(11)),
+                                Athlet7 = GetNameByID(reader.GetInt32(12)),
+                                Athlet8 = GetNameByID(reader.GetInt32(13)),
+                                Meldername = reader.GetString(14),
+                                Melderadresse = reader.GetString(15),
+                                Melderort = reader.GetString(16),
+                                Melderverein = reader.GetString(17),
+                                Melderemail = reader.GetString(18),
+                                Meldertel = reader.GetString(19),
+                                Melderfax = reader.GetString(20),
+                                Bezahlt = reader.GetDecimal(21),
+                                ZuZahlen = reader.GetDecimal(22),
+                                Bootsname = reader.GetString(23)
                             };
                             boote.Add(boot);
                         }
@@ -1033,10 +822,10 @@ namespace DataAccessLibrary
         public static ObservableCollection<Boot> GetBooteByVereinVereinssuche(string verein)
         {
             string GetAllBoatDataQuery = "select BootsID, Abteilung, Startnummer, "
-                        + "Rennbezeichnung, RennID, Verein, Steuerling, Athlet1, Athlet2, "
-                        + "Athlet3, Athlet4, Athlet5, Athlet6, Athlet7, Athlet8, Meldername, "
+                        + "RennID, GesammtVerein, SteuerlingID, Athlet1ID, Athlet2ID, "
+                        + "Athlet3ID, Athlet4ID, Athlet5ID, Athlet6ID, Athlet7ID, Athlet8ID, Meldername, "
                         + "Melderadresse, Melderort, Melderverein, Melderemail, Meldertel, Melderfax, "
-                        + "Bezahlt, ZuZahlen from Boote where verein = '" + verein + "';";
+                        + "Bezahlt, ZuZahlen, Bootsname from Boote where GesammtVerein = '" + verein + "';";
             var boote = new ObservableCollection<Boot>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -1053,27 +842,27 @@ namespace DataAccessLibrary
                                 BootsID = reader.GetInt32(0),
                                 Abteilung = reader.GetInt32(1),
                                 Startnummer = reader.GetInt32(2),
-                                Rennbezeichnung = reader.GetString(3),
-                                RennID = reader.GetString(4),
-                                Verein = reader.GetString(5),
-                                Steuerling = reader.GetString(6),
-                                Athlet1 = reader.GetString(7),
-                                Athlet2 = reader.GetString(8),
-                                Athlet3 = reader.GetString(9),
-                                Athlet4 = reader.GetString(10),
-                                Athlet5 = reader.GetString(11),
-                                Athlet6 = reader.GetString(12),
-                                Athlet7 = reader.GetString(13),
-                                Athlet8 = reader.GetString(14),
-                                Meldername = reader.GetString(15),
-                                Melderadresse = reader.GetString(16),
-                                Melderort = reader.GetString(17),
-                                Melderverein = reader.GetString(18),
-                                Melderemail = reader.GetString(19),
-                                Meldertel = reader.GetString(20),
-                                Melderfax = reader.GetString(21),
-                                Bezahlt = reader.GetDecimal(22),
-                                ZuZahlen = reader.GetDecimal(23)
+                                RennID = reader.GetString(3),
+                                Verein = reader.GetString(4),
+                                Steuerling = GetNameByID(reader.GetInt32(5)),
+                                Athlet1 = GetNameByID(reader.GetInt32(6)),
+                                Athlet2 = GetNameByID(reader.GetInt32(7)),
+                                Athlet3 = GetNameByID(reader.GetInt32(8)),
+                                Athlet4 = GetNameByID(reader.GetInt32(9)),
+                                Athlet5 = GetNameByID(reader.GetInt32(10)),
+                                Athlet6 = GetNameByID(reader.GetInt32(11)),
+                                Athlet7 = GetNameByID(reader.GetInt32(12)),
+                                Athlet8 = GetNameByID(reader.GetInt32(13)),
+                                Meldername = reader.GetString(14),
+                                Melderadresse = reader.GetString(15),
+                                Melderort = reader.GetString(16),
+                                Melderverein = reader.GetString(17),
+                                Melderemail = reader.GetString(18),
+                                Meldertel = reader.GetString(19),
+                                Melderfax = reader.GetString(20),
+                                Bezahlt = reader.GetDecimal(21),
+                                ZuZahlen = reader.GetDecimal(22),
+                                Bootsname = reader.GetString(23)
                             };
                             boote.Add(boot);
                         }
@@ -1085,9 +874,9 @@ namespace DataAccessLibrary
 
         public static ObservableCollection<Verein> GetVereineVereinssuche()
         {
-            const string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
+            const string GetAllVereineDataQuery = "SELECT GesammtVerein, count(GesammtVerein) AS anzahlBoote, "
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC";
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY GesammtVerein order by count(GesammtVerein) DESC, GesammtVerein ASC";
             var vereine = new ObservableCollection<Verein>();
             Debug.WriteLine(GetAllVereineDataQuery);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
@@ -1100,15 +889,17 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            Verein vereintmp = new Verein();
-                            vereintmp.Vereinsname = reader.GetString(0);
-                            vereintmp.AnzahlBoote = reader.GetInt32(1);
-                            vereintmp.BisherGesammtBezahlt = reader.GetDecimal(2);
-                            vereintmp.GesammtZuZahlen = reader.GetDecimal(3);
-                            vereintmp.Total = reader.GetDecimal(4);
+                            Verein vereintmp = new Verein
+                            {
+                                Vereinsname = reader.GetString(0),
+                                AnzahlBoote = reader.GetInt32(1),
+                                BisherGesammtBezahlt = reader.GetDecimal(2),
+                                GesammtZuZahlen = reader.GetDecimal(3),
+                                Total = reader.GetDecimal(4)
+                            };
                             vereintmp.Imp_BoolBezahlt = vereintmp.BisherGesammtBezahlt >= vereintmp.GesammtZuZahlen;
                             vereintmp.BoolBezahlt = vereintmp.Imp_BoolBezahlt;
-                        
+
                             vereintmp.VereinsBoote = GetBooteByVereinVereinssuche(vereintmp.Vereinsname);
 
                             vereine.Add(vereintmp);
@@ -1121,9 +912,9 @@ namespace DataAccessLibrary
 
         public static ObservableCollection<Verein> GetVereineVereinssuche(bool hatBezahlt)
         {
-            string GetAllVereineDataQuery = "SELECT verein, count(verein) AS anzahlBoote, "
+            string GetAllVereineDataQuery = "SELECT GesammtVerein, count(GesammtVerein) AS anzahlBoote, "
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
-                        + "sum(bezahlt) - sum(zuZahlen) as total FROM ProtoBoote GROUP BY verein order by count(verein) DESC, verein ASC";
+                        + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY GesammtVerein order by count(verein) DESC, GesammtVerein ASC";
             if (hatBezahlt)
             {
                 GetAllVereineDataQuery += " WHERE sum(bezahlt) >= sum(zuZahlen);";
@@ -1144,12 +935,14 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            Verein vereintmp = new Verein();
-                            vereintmp.Vereinsname = reader.GetString(0);
-                            vereintmp.AnzahlBoote = reader.GetInt32(1);
-                            vereintmp.BisherGesammtBezahlt = reader.GetDecimal(2);
-                            vereintmp.GesammtZuZahlen = reader.GetDecimal(3);
-                            vereintmp.Total = reader.GetDecimal(4);
+                            Verein vereintmp = new Verein
+                            {
+                                Vereinsname = reader.GetString(0),
+                                AnzahlBoote = reader.GetInt32(1),
+                                BisherGesammtBezahlt = reader.GetDecimal(2),
+                                GesammtZuZahlen = reader.GetDecimal(3),
+                                Total = reader.GetDecimal(4)
+                            };
                             vereintmp.Imp_BoolBezahlt = vereintmp.BisherGesammtBezahlt >= vereintmp.GesammtZuZahlen;
                             vereintmp.BoolBezahlt = vereintmp.Imp_BoolBezahlt;
 
@@ -1163,58 +956,41 @@ namespace DataAccessLibrary
             return vereine;
         }
 
-        internal static void UpdateBootsImport(string zeilenName, object updateWert, int BootsID)
+        public static ObservableCollection<Rennen> GetRennKonflikte()
         {
-
-            string UpdateOneBoatData =
-                "UPDATE ProtoBoote "
-                + "SET '" + zeilenName + "' = '" + updateWert.ToString()
-                + "' WHERE BootsID = '" + BootsID.ToString() + "';";
-            Debug.WriteLine(UpdateOneBoatData);
-            using (SqliteConnection db =
-                new SqliteConnection(sqliteConnectionString))
+            var abteilungen = new ObservableCollection<Rennen>();
+            const string GetAllVereineDataQuery = "SELECT Boote.RennID, count(Boote.RennID) AS AnzahlBoote, Boote.Abteilung as Abteilung, RennenLookuptable.Bezeichnung as Rennbezeichnung, RennenLookuptable.BootsTyp as BootsTyp "
+                + "FROM Boote "
+                + "JOIN RennenLookuptable ON RennenLookuptable.RennNr = Boote.RennID "
+                + "GROUP BY Boote.RennID order by Boote.Abteilung ASC, RennenLookuptable.ROWID ASC;";
+            Debug.WriteLine(GetAllVereineDataQuery);
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
-                db.Open();
-                using (SqliteCommand CreateBooteCommand = new SqliteCommand(UpdateOneBoatData, db))
+                using (SqliteCommand cmd = conn.CreateCommand())
                 {
-                    CreateBooteCommand.ExecuteReader();
+                    cmd.CommandText = GetAllVereineDataQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Rennen rennentmp = new Rennen
+                            {
+                                RennID = reader.GetString(0),
+                                AnzahlBoote = reader.GetInt32(1),
+                                Abteilung = reader.GetInt32(2),
+                                Rennbezeichnung = reader.GetString(3),
+                                Bootstyp = reader.GetString(4)
+                            };
+
+                            abteilungen.Add(rennentmp);
+                        }
+                    }
                 }
             }
+            return abteilungen;
         }
 
-        internal static void UpdateBootsBezahlstatus(ObservableCollection<Boot> vereinsBoote, bool boolBezahlt)
-        {
-            if (boolBezahlt)
-            {
-                foreach (Boot _tmp in vereinsBoote)
-                {
-                    UpdateBoot("Bezahlt", _tmp.ZuZahlen, _tmp.BootsID);
-                }
-            }
-            else
-            {
-                foreach (Boot _tmp in vereinsBoote)
-                {
-                    UpdateBoot("Bezahlt", 0, _tmp.BootsID);
-                }
-            }
-        }
 
-        internal static void UpdateBoot(string zeilenName, object updateWert, int BootsID)
-        {
-            string UpdateOneBoatData = "UPDATE Boote "
-                + "SET '" + zeilenName + "' = '" + updateWert.ToString()
-                + "' WHERE BootsID = '" + BootsID.ToString() + "';";
-            Debug.WriteLine(UpdateOneBoatData);
-            using (SqliteConnection db =
-                new SqliteConnection(sqliteConnectionString))
-            {
-                db.Open();
-                using (SqliteCommand CreateBooteCommand = new SqliteCommand(UpdateOneBoatData, db))
-                {
-                    CreateBooteCommand.ExecuteReader();
-                }
-            }
-        }
     }
 }

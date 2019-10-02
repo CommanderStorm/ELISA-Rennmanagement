@@ -16,22 +16,22 @@ namespace App1
         public VereinssSuche()
         {
             this.InitializeComponent();
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche();
+            dataGrid.ItemsSource = DataAccess.GetVereineVereinssuche();
         }
 
         private void FilterBezahlt_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche(true);
+            dataGrid.ItemsSource = DataAccess.GetVereineVereinssuche(true);
         }
 
         private void FilternichtBezahlt_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche(false);
+            dataGrid.ItemsSource = DataAccess.GetVereineVereinssuche(false);
         }
 
         private void ClearFilter_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetVereineVereinssuche();
+            dataGrid.ItemsSource = DataAccess.GetVereineVereinssuche();
         }
 
 

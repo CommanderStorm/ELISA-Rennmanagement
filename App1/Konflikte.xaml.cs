@@ -1,5 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
-
+﻿using DataAccessLibrary;
+using Windows.UI.Xaml.Controls;
 
 
 namespace App1
@@ -12,6 +12,12 @@ namespace App1
         public Konflikte()
         {
             this.InitializeComponent();
+            dataGrid.ItemsSource = DataAccess.GetRennKonflikte();
+        }
+
+        private void Go_Click(object _, Windows.UI.Xaml.RoutedEventArgs _1)
+        {
+
         }
     }
 }

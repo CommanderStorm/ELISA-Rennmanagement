@@ -14,37 +14,37 @@ namespace App1
         public BootsSuche()
         {
             this.InitializeComponent();
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten();
+            dataGrid.ItemsSource = DataAccess.GetDatenBearbeiten();
         }
 
         private void FilterAbteilung1_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(1);
+            dataGrid.ItemsSource = DataAccess.GetDatenBearbeiten(1);
         }
 
         private void FilterAbteilung2_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(2);
+            dataGrid.ItemsSource = DataAccess.GetDatenBearbeiten(2);
         }
 
         private void FilterAbteilung3_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(3);
+            dataGrid.ItemsSource = DataAccess.GetDatenBearbeiten(3);
         }
 
         private void FilterAbteilung4_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(4);
+            dataGrid.ItemsSource = DataAccess.GetDatenBearbeiten(4);
         }
 
         private void ClearFilterAbteilung_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten();
+            dataGrid.ItemsSource = DataAccess.GetDatenBearbeiten();
         }
 
         private void FilterNurMitKommentar_Click(object _, RoutedEventArgs _1)
         {
-            dataGrid.ItemsSource = DataAccessLibrary.DataAccess.GetImportdatenBearbeiten(true);
+            dataGrid.ItemsSource = DataAccess.GetDatenBearbeiten(true);
         }
 
 
@@ -57,8 +57,8 @@ namespace App1
             }
             else
             {
-                ObservableCollection<BootsImport> bootsanzeige_neu = new ObservableCollection<BootsImport>();
-                foreach (BootsImport boot_under_search_Review in dataGrid.ItemsSource)
+                ObservableCollection<BootEditable> bootsanzeige_neu = new ObservableCollection<BootEditable>();
+                foreach (BootEditable boot_under_search_Review in dataGrid.ItemsSource)
                 {
                     if (searchstring.Contains(boot_under_search_Review.Startnummer.ToString()) || boot_under_search_Review.Verein.ToLower().Contains(searchstring) || boot_under_search_Review.Steuerling.ToLower().Contains(searchstring) || boot_under_search_Review.Athlet1.ToLower().Contains(searchstring) || boot_under_search_Review.Athlet2.ToLower().Contains(searchstring) || boot_under_search_Review.Athlet3.ToLower().Contains(searchstring) || boot_under_search_Review.Athlet4.ToLower().Contains(searchstring) || boot_under_search_Review.Athlet5.ToLower().Contains(searchstring) || boot_under_search_Review.Athlet6.ToLower().Contains(searchstring) || boot_under_search_Review.Athlet7.ToLower().Contains(searchstring) || boot_under_search_Review.Athlet8.ToLower().Contains(searchstring))
                     {

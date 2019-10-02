@@ -8,61 +8,62 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dataaccesslibrary="using:DataAccessLibrary"
     mc:Ignorable="d">
+    
     <Grid>
         <StackPanel VerticalAlignment="Top">
             <Rectangle HorizontalAlignment="Stretch" Fill="#FF003666" Height="118" VerticalAlignment="Top" Margin="-12,0,-12,0"/>
         </StackPanel>
-    <Grid>
-        <Grid.Resources>
-            <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:BootsImport">
-                <StackPanel>
-                    <TextBlock Margin="20" Text="Hier sind die Details für das Ausgewählte Boot:" />
-                    <Grid Margin="20,10" Padding="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
+        <Grid>
+            <Grid.Resources>
+                <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:BootEditable">
+                    <StackPanel>
+                        <TextBlock Margin="20" Text="Hier sind die Details für das ausgewählte Boot:" />
+                        <Grid Margin="20,10" Padding="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                        <TextBlock Text="BootsID: " FontWeight="SemiBold" FontSize="13" Margin="3,0" />
-                        <TextBlock Grid.Row="1" Text="Rennbezeichnung: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
-                        <TextBlock Grid.Row="2" Text="Bootstyp: " FontWeight="SemiBold" FontSize="13" Margin="3,0" />
-                        <TextBlock Grid.Column="1" FontSize="13" Text="{Binding BootsID}"  Margin="3,0"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="13" Text="{Binding Rennbezeichnung}"  Margin="3,0"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" FontSize="13" Text="{Binding Bootstyp}" Margin="3,0"/>
+                            <TextBlock Text="BootsID: " FontWeight="SemiBold" FontSize="13" Margin="3,0" />
+                            <TextBlock Grid.Row="1" Text="Rennbezeichnung: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
+                            <TextBlock Grid.Row="2" Text="Bootstyp: " FontWeight="SemiBold" FontSize="13" Margin="3,0" />
+                            <TextBlock Grid.Column="1" FontSize="13" Text="{x:Bind BootsID}"  Margin="3,0"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" FontSize="13" Text="{x:Bind Rennbezeichnung}"  Margin="3,0"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" FontSize="13" Text="{x:Bind Bootstyp}" Margin="3,0"/>
 
-                        <TextBlock Grid.Column="2" Text="Verein: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="Bootsname: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
+                            <TextBlock Grid.Column="2" Text="Verein: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Bootsname: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
                             <TextBlock Grid.Row="2" Grid.Column="2" Text="Kommentare: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
-                        <TextBlock Grid.Column="3" FontSize="13" Text="{Binding Verein}" Margin="3,0"/>
-                            <TextBlock Grid.Row="1" Grid.Column="3" FontSize="13" Text="{Binding Bootsname}" Margin="3,0"/>
-                            <TextBlock Grid.Row="2" Grid.Column="3" FontSize="13" Text="{Binding Kommentare}" Margin="3,0"/>
+                            <TextBlock Grid.Column="3" FontSize="13" Text="{x:Bind Verein}" Margin="3,0"/>
+                            <TextBlock Grid.Row="1" Grid.Column="3" FontSize="13" Text="{x:Bind Bootsname}" Margin="3,0"/>
+                            <TextBlock Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" FontSize="13" Text="{x:Bind Kommentare}" Margin="3,0"/>
 
                             <TextBlock Grid.Column="4" Text="Name des Melders: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
                             <TextBlock Grid.Row="1" Grid.Column="4" Text="Verein des Melders: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
                             <TextBlock Grid.Row="2" Grid.Column="4" Text="Email des Melders: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
                             <TextBlock Grid.Row="3" Grid.Column="4" Text="Telefonnummer des Melders: " FontWeight="SemiBold" FontSize="13" Margin="3,0"/>
-                            <TextBlock Grid.Column="5" FontSize="13" Text="{Binding Meldername}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="5" FontSize="13" Text="{Binding Melderverein}" Margin="3,0"/>
-                            <TextBlock Grid.Row="2" Grid.Column="5" FontSize="13" Text="{Binding Melderemail}" Margin="3,0"/>
-                            <TextBlock Grid.Row="3" Grid.Column="5" FontSize="13" Text="{Binding Meldertel}" Margin="3,0"/>
+                            <TextBlock Grid.Column="5" FontSize="13" Text="{x:Bind Meldername}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="5" FontSize="13" Text="{x:Bind Melderverein}" Margin="3,0"/>
+                            <TextBlock Grid.Row="2" Grid.Column="5" FontSize="13" Text="{x:Bind Melderemail}" Margin="3,0"/>
+                            <TextBlock Grid.Row="3" Grid.Column="5" FontSize="13" Text="{x:Bind Meldertel}" Margin="3,0"/>
                         </Grid>
-                </StackPanel>
-            </DataTemplate>
-        </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="80" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
+                    </StackPanel>
+                </DataTemplate>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Grid Margin="12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>
@@ -71,7 +72,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="Bearbeitung: Athletendaten" VerticalAlignment="Center"  Style="{ThemeResource SubtitleTextBlockStyle}" FocusVisualPrimaryBrush="White" Foreground="White" HorizontalAlignment="Left"></TextBlock>
                 <TextBox Grid.Column="1" Background="#E5FFFFFF"  x:Name="searchbox" PlaceholderText="Suche nach Startnummer, Verein, Steuermann/frau, oder Athlet/in" Margin="20,0"
-                     Visibility="Visible" Foreground="White" FocusVisualPrimaryBrush="White" FontFamily="Segoe UI" FocusVisualSecondaryBrush="#99FFFFFF" Height="40" VerticalAlignment="Center" AcceptsReturn="False" TextChanged="Searchbox_TextChanged" Width="Auto" FontSize="18"/>
+                        Visibility="Visible" Foreground="White" FocusVisualPrimaryBrush="White" FontFamily="Segoe UI" FocusVisualSecondaryBrush="#99FFFFFF" Height="40" VerticalAlignment="Center" AcceptsReturn="False" TextChanged="Searchbox_TextChanged" Width="Auto" FontSize="18"/>
                 <AppBarButton Grid.Column="2" Icon="Filter" Label="Filter" Width="Auto" HorizontalAlignment="Right" Foreground="White">
                     <AppBarButton.Flyout>
                         <MenuFlyout>
@@ -80,34 +81,32 @@
                             <MenuFlyoutItem x:Name="FilterAbteilung3" Text="Abteilung 3" Click="FilterAbteilung3_Click" />
                             <MenuFlyoutItem x:Name="FilterAbteilung4" Text="Abteilung 4" Click="FilterAbteilung4_Click" />
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem x:Name="FilterNurMitKommentar" Text="nur Boote mit Kommentaren Anzeigen" Click="FilterNurMitKommentar_Click" />
+                            <MenuFlyoutItem x:Name="FilterNurMitKommentar" Text="nur Boote mit Kommentaren anzeigen" Click="FilterNurMitKommentar_Click" />
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem x:Name="clearFilterAbteilung" Text="Nicht Filtern oder Suchen" Click="ClearFilterAbteilung_Click" />
+                            <MenuFlyoutItem x:Name="clearFilterAbteilung" Text="Nicht Filtern oder Suchen" Click="ClearFilterAbteilung_Click"/>
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
             </Grid>
             <controls:DataGrid
-        Grid.Row="1"
-        x:Name="dataGrid"
-        Margin="-11,5,-11,0"
-        HorizontalScrollBarVisibility="Auto"
-        VerticalScrollBarVisibility="Auto"
-        AlternatingRowForeground="Black"
-        AreRowDetailsFrozen="True"
-        AreRowGroupHeadersFrozen="True"
-        AutoGenerateColumns="False"
-        CanUserSortColumns="True"
-        CanUserReorderColumns="True"
-        CanUserResizeColumns="True"
-        ColumnHeaderHeight="32"
-        GridLinesVisibility="Horizontal"
-        HeadersVisibility="Column"
-        IsReadOnly="False"
-        RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
-        RowDetailsVisibilityMode="VisibleWhenSelected"
-        SelectionMode="Single"
-        RowGroupHeaderPropertyNameAlternative="Athletensbearbeitung" HorizontalGridLinesBrush="#7F000000" VerticalGridLinesBrush="{x:Null}">
+                    x:Name="dataGrid" Grid.Row="1"
+                    Margin="-11,5,-11,0"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Auto"
+                    AreRowDetailsFrozen="True"
+                    AreRowGroupHeadersFrozen="True"
+                    AutoGenerateColumns="False"
+                    CanUserSortColumns="False"
+                    CanUserReorderColumns="True"
+                    CanUserResizeColumns="False"
+                    ColumnHeaderHeight="32"
+                    GridLinesVisibility="Horizontal"
+                    HeadersVisibility="Column"
+                    IsReadOnly="False"
+                    RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
+                    RowDetailsVisibilityMode="VisibleWhenSelected"
+                    SelectionMode="Single"
+                    HorizontalGridLinesBrush="#7F000000">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Steuerling" Binding="{Binding Steuerling, Mode=TwoWay}" Tag="Steuerling" />
                     <controls:DataGridTextColumn Header="Athlet 8" Binding="{Binding Athlet8, Mode=TwoWay}" Tag="Athlet8" />
@@ -118,9 +117,8 @@
                     <controls:DataGridTextColumn Header="Athlet 3" Binding="{Binding Athlet3, Mode=TwoWay}" Tag="Athlet3" />
                     <controls:DataGridTextColumn Header="Athlet 2" Binding="{Binding Athlet2, Mode=TwoWay}" Tag="Athlet2" />
                     <controls:DataGridTextColumn Header="Athlet 1" Binding="{Binding Athlet1, Mode=TwoWay}" Tag="Athlet1" />
-                </controls:DataGrid.Columns> 
+                </controls:DataGrid.Columns>
             </controls:DataGrid>
-            <Viewbox/>
         </Grid>
     </Grid>
 </Page>

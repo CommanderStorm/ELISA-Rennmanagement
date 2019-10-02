@@ -15,9 +15,9 @@
         <Grid>
 
             <Grid.Resources>
-                <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:BootsImport">
+                <DataTemplate x:Key="RowDetailsTemplate" x:DataType="dataaccesslibrary:BootEditable">
                     <StackPanel>
-                        <TextBlock Margin="20" Text="Hier sind die Details für das Ausgewählte Boot:" />
+                        <TextBlock Margin="20" Text="Hier sind die Details für das ausgewählte Boot:" />
                         <Grid Margin="20,10" Padding="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
