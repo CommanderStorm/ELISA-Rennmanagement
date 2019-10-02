@@ -71,7 +71,7 @@
                             <TextBlock Grid.Row="2" Grid.Column="7" FontSize="13" Text="{Binding Melderemail}" Margin="3,0"/>
                             <TextBlock Grid.Row="3" Grid.Column="7" FontSize="13" Text="{Binding Meldertel}" Margin="3,0"/>
                             
-                            <ToggleButton Grid.Row="4" x:Name="Bezahlt_Button" Content="Bezahlt" Margin="25,20,20,20" Height="150" FontWeight="Bold" FontFamily="Segoe UI Black" FontSize="36" Foreground="White" FocusVisualSecondaryBrush="#FFD10000" RequestedTheme="Light" Background="#FF2AF63B" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                            <ToggleButton Grid.Row="4" Grid.ColumnSpan="8" x:Name="Bezahlt_Button" Content="Bezahlt" Margin="25,20,20,20" Height="150" FontWeight="Bold" FontFamily="Segoe UI Black" FontSize="36" Foreground="White" FocusVisualSecondaryBrush="#FFD10000" RequestedTheme="Light" Background="#FF2AF63B" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
                                 <ToggleButton.FocusVisualPrimaryBrush>
                                     <SolidColorBrush Color="#FFD10000"/>
                                 </ToggleButton.FocusVisualPrimaryBrush>
