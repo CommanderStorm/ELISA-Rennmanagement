@@ -396,7 +396,7 @@ namespace DataAccessLibrary
 
         private static int GetPersonenID(string personenName, string personenVerein)
         {
-            string personIsAlreadyInDatabaseGetIDQuery = "SELECT ROWID FROM Personen WHERE Name = '" + personenName + "' AND GesammtVerein = '" + personenVerein + "';";
+            string personIsAlreadyInDatabaseGetIDQuery = "SELECT ROWID FROM Personen WHERE Name = '" + personenName + "' AND Verein = '" + personenVerein + "';";
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())

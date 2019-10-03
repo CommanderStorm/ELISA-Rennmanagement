@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -92,9 +93,10 @@ namespace App1
             {
                 Title = "Der Import wurde gestart!",
                 Content = "Das dauert leider etwas, habe deshalb bitte etwas Geduld.",
-                CloseButtonText = "Ok"
+                CloseButtonText = "Ok",
+                DefaultButton= ContentDialogButton.Close
             };
-            _ = await noWifiDialog.ShowAsync();
+            _ = await Task.Run(() => noWifiDialog.ShowAsync());
         }
 
         private async void Durchsuchen_Click(object sender, RoutedEventArgs _1)
