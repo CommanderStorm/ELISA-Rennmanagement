@@ -94,9 +94,9 @@ namespace App1
                 Title = "Der Import wurde gestart!",
                 Content = "Das dauert leider etwas, habe deshalb bitte etwas Geduld.",
                 CloseButtonText = "Ok",
-                DefaultButton= ContentDialogButton.Close
+                DefaultButton = ContentDialogButton.Close
             };
-            _ = await Task.Run(() => noWifiDialog.ShowAsync());
+            _ = await noWifiDialog.ShowAsync();
         }
 
         private async void Durchsuchen_Click(object sender, RoutedEventArgs _1)

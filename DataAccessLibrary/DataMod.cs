@@ -66,12 +66,45 @@ namespace DataAccessLibrary
             }
         }
 
-        /*
-        public ObservableCollection<Tier1Kollision> GetTierOneKollisions()
-        {
-        var tierOneKollisionen = new ObservableCollection<Tier1Kollision>();
-            const string GetTierOneKollisionsSQLString = "";
 
+        public static Collection<Tier1Kollision> GetTierOneKollisions()
+        {
+            var tierOneKollisionen = new ObservableCollection<Tier1Kollision>();
+            const string GetTierOneKollisionsSQLString = "WITH tmp('BootsID', 'RennID', 'AthID') as ("
+            + "SELECT BootsID, RennID, SteuerlingID "
+            + "FROM Boote "
+            + "UNION ALL "
+            + "SELECT BootsID, RennID, Athlet1ID "
+            + "FROM Boote "
+            + "UNION ALL "
+            + "SELECT BootsID, RennID, Athlet2ID "
+            + "FROM Boote "
+            + "UNION ALL "
+            + "SELECT BootsID, RennID, Athlet3ID "
+            + "FROM Boote "
+            + "UNION ALL "
+            + "SELECT BootsID, RennID, Athlet4ID "
+            + "FROM Boote "
+            + "UNION ALL "
+            + "SELECT BootsID, RennID, Athlet5ID "
+            + "FROM Boote "
+            + "UNION ALL "
+            + "SELECT BootsID, RennID, Athlet6ID "
+            + "FROM Boote "
+            + "UNION ALL "
+            + "SELECT BootsID, RennID, Athlet7ID "
+            + "FROM Boote "
+            + "UNION ALL "
+            + "SELECT BootsID, RennID, Athlet8ID "
+            + "FROM Boote "
+            + ") "
+            + "SELECT tmp.BootsID, tmp.RennID, Personen.Name, Personen.Verein "
+            + "FROM tmp "
+            + "JOIN Personen On tmp.AthID = Personen.ROWID "
+            + "WHERE(RennID, AthID) IN "
+            + "(SELECT RennID, AthID FROM tmp "
+            + "GROUP BY RennID, AthID "
+            + "HAVING count(*) > 1 ORDER by AthID)";
             Debug.WriteLine(GetTierOneKollisionsSQLString);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -83,21 +116,20 @@ namespace DataAccessLibrary
                     {
                         while (reader.Read())
                         {
-                            Rennen rennentmp = new Tier1Kollision
+                            Tier1Kollision konflikttmp = new Tier1Kollision
                             {
-                                RennID = reader.GetString(0),
-                                AnzahlBoote = reader.GetInt32(1),
-                                Abteilung = reader.GetInt32(2),
-                                Rennbezeichnung = reader.GetString(3),
-                                Bootstyp = reader.GetString(4)
+                                BootID = reader.GetInt32(0),
+                                RennID = reader.GetString(1),
+                                Name = reader.GetString(2),
+                                Verein = reader.GetString(3)
                             };
 
-                            tierOneKollisionen.Add(rennentmp);
+                            tierOneKollisionen.Add(konflikttmp);
                         }
                     }
                 }
             }
-            return abteilungen;
-        }*/
+            return tierOneKollisionen;
+        }
     }
 }

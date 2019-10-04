@@ -5,9 +5,9 @@ namespace DataAccessLibrary
 {
     public class Tier1Kollision : INotifyPropertyChanged
     {
-        public int BootID1 { get; set; }
-        public int BootID2 { get; set; }
+        public int BootID { get; set; }
         public string Name { get; set; }
+        public string Verein { get; set; }
         public string RennID { get; set; }
 
 

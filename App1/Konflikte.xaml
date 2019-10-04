@@ -40,7 +40,7 @@
                         <TextBlock VerticalAlignment="Top"  Style="{ThemeResource BodyTextBlockStyle}" FocusVisualPrimaryBrush="White" Foreground="White" HorizontalAlignment="Left" Margin="0,5,0,0">
                     Anleitung:
                         </TextBlock>
-                        <TextBlock VerticalAlignment="Top"  Style="{ThemeResource  CaptionTextBlockStyle}" FocusVisualPrimaryBrush="White" Foreground="White" HorizontalAlignment="Left" Margin="0,30,0,0">
+                        <TextBlock x:Name="konflikttext" VerticalAlignment="Top"  Style="{ThemeResource  CaptionTextBlockStyle}" FocusVisualPrimaryBrush="White" Foreground="White" HorizontalAlignment="Left" Margin="0,30,0,0">
                             Sobald du auf die "Go!"-Schaltfläche drückst, analysiert ein Algorithmus den zuvor importierten und bearbeiteten Datensatz. <LineBreak/> <LineBreak/>
 
                             Er geht dabei so vor, dass er im <Bold>ersten Schritt</Bold> schaut, dass keine Person <Bold FontStyle="Italic">doppelt in einem Boot</Bold> oder <Bold FontStyle="Italic">doppelt in einer Altersklasse</Bold> startet. Sollte das dennoch der Fall sein, wird ein <Bold>PopUp</Bold> erzeugt und man muss die, im Popup genannten, Boote bearbeiten. <LineBreak/>

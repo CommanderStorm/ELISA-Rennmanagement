@@ -430,6 +430,7 @@ namespace DataAccessLibrary
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Codequalität", "IDE0051:Nicht verwendete private Member entfernen", Justification = "<Ausstehend>")]
         private static bool PersonDoesNOTmatchDatabase(string personenName, int rowID)
         {
             string personIsAlreadyInDatabaseQuery = "SELECT count(*) FROM Personen WHERE Name = '" + personenName + "' AND ROWID = '" + rowID + "';";
