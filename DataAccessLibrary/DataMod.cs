@@ -98,6 +98,7 @@ namespace DataAccessLibrary
             + "SELECT BootsID, RennID, Athlet8ID "
             + "FROM Boote "
             + ") "
+
             + "SELECT tmp.BootsID, tmp.RennID, Personen.Name, Personen.Verein "
             + "FROM tmp "
             + "JOIN Personen On tmp.AthID = Personen.ROWID "

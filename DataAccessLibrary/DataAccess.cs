@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -238,6 +239,96 @@ namespace DataAccessLibrary
             }
         }
 
+        public static int KinderInLauf1(List<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static int RennbooteInLauf(List<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static int AnzahlderKonflikte(List<string> ltmp)
+        {
+            string RennidWherecomand = "";
+            foreach(string stmp in ltmp)
+            {
+                RennidWherecomand+= ", OR RennID = '" + stmp + "'";
+            }
+            RennidWherecomand = "WHERE " + RennidWherecomand.Substring(5)+" ";
+            string GetAllVereineDataQuery = "WITH athletenliste('BootsID', 'RennID', 'AthID') as ( "
+                + "SELECT BootsID, RennID, SteuerlingID "
+                + "FROM Boote "
+                + "UNION ALL "
+                + "SELECT BootsID, RennID, Athlet1ID "
+                + "FROM Boote "
+                + "UNION ALL "
+                + "SELECT BootsID, RennID, Athlet2ID "
+                + "FROM Boote "
+                + "UNION ALL "
+                + "SELECT BootsID, RennID, Athlet3ID "
+                + "FROM Boote "
+                + "UNION ALL "
+                + "SELECT BootsID, RennID, Athlet4ID "
+                + "FROM Boote "
+                + "UNION ALL "
+                + "SELECT BootsID, RennID, Athlet5ID "
+                + "FROM Boote "
+                + "UNION ALL "
+                + "SELECT BootsID, RennID, Athlet6ID "
+                + "FROM Boote "
+                + "UNION ALL "
+                + "SELECT BootsID, RennID, Athlet7ID "
+                + "FROM Boote "
+                + "UNION ALL "
+                + "SELECT BootsID, RennID, Athlet8ID "
+                + "FROM Boote "
+                + RennidWherecomand
+                + "ORDER by BootsID "
+                + ") "
+
+                + ", athletencounter('AnzahlAthletendoppelbenutzungen') as ( "
+                + "SELECT count(*) "
+                + "FROM athletenliste "
+                + "WHERE(AthID) IN "
+                + "(SELECT AthID "
+                + "FROM athletenliste "
+                + "GROUP BY AthID "
+                + "HAVING count(*) > 1) "
+                + "ORDER by AthID "
+                + ") "
+
+                + ", bootscounter('AnzahlBootsdoppelbenutzungen') as ( "
+                + "SELECT count(*) "
+                + "FROM Boote "
+                + "WHERE(BootsID) IN "
+                + "(SELECT BootsID "
+                + "FROM Boote "
+                + RennidWherecomand
+                + "GROUP BY Bootsname "
+                + "HAVING count(*) > 1) "
+                + ") "
+
+                + "SELECT AnzahlBootsdoppelbenutzungen+AnzahlAthletendoppelbenutzungen as 'Kollisionsanzahl' "
+                + "FROM athletencounter, bootscounter";
+            Debug.WriteLine(GetAllVereineDataQuery);
+            using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
+            {
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = GetAllVereineDataQuery;
+                    conn.Open();
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        return reader.GetInt32(0);
+                    }
+                }
+            }
+        }
+
+
         public static void Reset()
         {
             ResetBoote();
@@ -295,31 +386,6 @@ namespace DataAccessLibrary
         {
             Rennen temprennen = RennenLookuptable_Query(RennID);
             decimal _ZuZahlen = temprennen.ZuZahlen;
-            /*
-            Debug.WriteLine("BootID: " + BootsID);
-            Debug.WriteLine("Bootstyp: " + _Bootstyp);
-            Debug.WriteLine("Rennbezeichnung: " + _Rennbezeichnung);
-            Debug.WriteLine("RennID: " + RennID);
-            Debug.WriteLine("Bootsname: " + Bootsname);
-            Debug.WriteLine("Verein: " + Verein);
-            Debug.WriteLine("Steuerling: " + Steuerling);
-            Debug.WriteLine("Athlet1: " + Athlet1);
-            Debug.WriteLine("Athlet2: " + Athlet2);
-            Debug.WriteLine("Athlet3: " + Athlet3);
-            Debug.WriteLine("Athlet4: " + Athlet4);
-            Debug.WriteLine("Athlet5: " + Athlet5);
-            Debug.WriteLine("Athlet6: " + Athlet6);
-            Debug.WriteLine("Athlet7: " + Athlet7);
-            Debug.WriteLine("Athlet8: " + Athlet8);
-            Debug.WriteLine("Meldername: " + Meldername);
-            Debug.WriteLine("Melderadresse: " + Melderadresse);
-            Debug.WriteLine("Melderort: " + Melderort);
-            Debug.WriteLine("Melderverein: " + Melderverein);
-            Debug.WriteLine("Melderemail: " + Melderemail);
-            Debug.WriteLine("Meldertel: " + Meldertel);
-            Debug.WriteLine("Melderfax: " + Melderfax);
-            Debug.WriteLine("Kommentare: " + Kommentare);
-            */
             int SteuerlingID = GetOrSetPersonenID(Steuerling, SteuerlingVerein);
             int Athlet1ID = GetOrSetPersonenID(Athlet1, Athlet1Verein);
             int Athlet2ID = GetOrSetPersonenID(Athlet2, Athlet2Verein);
