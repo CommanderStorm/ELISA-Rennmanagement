@@ -1,15 +1,15 @@
 ﻿using DataAccessLibrary;
-using Extreme.Mathematics.Optimization;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
-using System;
 
 namespace App1
 {
     public sealed partial class Konflikte : Page
     {
-        private static int maxValue = 4;
+        private static int maxValue = 3;
         private string[] konfliktRennID;
         public Konflikte()
         {
@@ -24,7 +24,7 @@ namespace App1
             konfliktRennID = _konfliktRennID.ToArray();
         }
 
-        private void Go_Click(object _, Windows.UI.Xaml.RoutedEventArgs _1)
+        private async void Go_ClickAsync(object _, Windows.UI.Xaml.RoutedEventArgs _1)
         {
             ObservableCollection<Rennen> rennKonflikte = DataAccess.GetRennKonflikte();
             //rule out an empty database
@@ -56,56 +56,98 @@ namespace App1
                 }
                 else
                 {
-                    // generating the optimum array in mulitple Threads
-                    Array optimalesArray = generateEval(rennKonflikte.Count);
-                    //optimales Array ausgeben und in Datenbank schreiben
-
+                    await GenerateTheBestCombination(rennKonflikte);
                 }
             }
         }
 
-        private Array generateEval(int rennAbteilungsAnzahl)
+        private async Task GenerateTheBestCombination(ObservableCollection<Rennen> rennKonflikte)
         {
-            Random rtmp = new Random();
-            double[] digit = new double[rennAbteilungsAnzahl];
-            for (int i = digit.Length - 1; i >= 0; i--)
+            List<Task<int[]>> tasks = new List<Task<int[]>>();
+            for (int index0 = 1; index0 <= maxValue; index0++)
             {
-                digit[i] = rtmp.Next(1, maxValue);
+                for (int index1 = 1; index1 <= maxValue; index1++)
+                {
+                    // generating the optimum array in mulitple Threads
+                    tasks.Add(Task.Run(() => topGuess(index0, index1, rennKonflikte.Count)));
+                }
+            }
+            int[][] results = await Task.WhenAll(tasks);
+
+            //eval all the top Dogs
+            int[] bestGuess = results[0];
+            int bestGuessCost = EvalFunctionfromArray(bestGuess);
+            foreach (int[] tmp in results)
+            {
+                if (EvalFunctionfromArray(tmp) < bestGuessCost)
+                {
+                    bestGuess = tmp;
+                    bestGuessCost = EvalFunctionfromArray(tmp);
+                }
             }
 
-            Extreme.Mathematics.Vector<double> initialGuess = Extreme.Mathematics.Vector.Create(digit);
 
-            Func<Extreme.Mathematics.Vector<double>, double> f = evalFunctionfromVector;
-            // Which method is used, is specified by a constructor
-            // parameter of type QuasiNewtonMethod:
-            var bfgs = new QuasiNewtonOptimizer(QuasiNewtonMethod.Bfgs);
 
-            bfgs.InitialGuess = initialGuess;
-            bfgs.ExtremumType = ExtremumType.Minimum;
-
-            // Set the ObjectiveFunction:
-            bfgs.ObjectiveFunction = f;
-            // The FindExtremum method does all the hard work:
-            bfgs.FindExtremum();
-
-            Console.WriteLine("BFGS Method:");
-            Console.WriteLine("  Solution: {0}", bfgs.Extremum);
-            Console.WriteLine("  Estimated error: {0}", bfgs.EstimatedError);
-            Console.WriteLine("  # iterations: {0}", bfgs.IterationsNeeded);
-            // Optimizers return the number of function evaluations
-            // and the number of gradient evaluations needed:
-            Console.WriteLine("  # function evaluations: {0}", bfgs.EvaluationsNeeded);
-            Console.WriteLine("  # gradient evaluations: {0}", bfgs.GradientEvaluationsNeeded);
-
-            return digit;
+            //optimales Array ausgeben und in Datenbank schreiben
         }
 
-        private double evalFunctionfromVector(Extreme.Mathematics.Vector<double> x)
+        private int[] topGuess(int index0, int index1, int rennKonflikteAnzahl)
+        {
+            //create topGuess
+            int[] topGuess = new int[rennKonflikteAnzahl];
+            int[] increment;
+
+            //initialise 
+            topGuess[0] = index0;
+            topGuess[1] = index1;
+            for (int i = topGuess.Length - 1; i > 1; i--)
+            {
+                topGuess[i] = 1;
+            }
+            int topGuessCost = EvalFunctionfromArray(topGuess);
+            increment = topGuess;
+         
+            //while Loop
+            while (increment[1] == index1)
+            {
+                //increment
+                increment = IncrementArray(increment);
+                //if increment is better replace the topGuess and its fitness
+                if (EvalFunctionfromArray(increment) < topGuessCost)
+                {
+                    topGuess = increment;
+                    topGuessCost = EvalFunctionfromArray(increment);
+                }
+            }
+            
+            //Diagnostics
+            return topGuess;
+        }
+
+        private int[] IncrementArray(int[] increment)
+        {
+            for (int i = increment.Length - 1; i >= 0; i--)
+            {
+                increment[i] += 1;
+                if (increment[i] >= maxValue)
+                {
+                    increment[i] = 1;
+                }
+                else
+                {
+                    break; 
+                    // This will break out of the for - loop and stop processing increments as everything just fit nicely and we don't have to update more previous increments
+                }
+            }
+            return increment;
+        }
+
+        private int EvalFunctionfromArray(int[] x)
         {
             List<string>[] arrayListejeAbteilung = new List<string>[maxValue];
-            for (int i = 0; i < x.Count; i++)
+            for (int i = 0; i < x.Length; i++)
             {
-                arrayListejeAbteilung[Convert.ToInt32(x.GetValue(i))].Add(konfliktRennID[i]);
+                arrayListejeAbteilung[x[i]].Add(konfliktRennID[i]);
             }
             int anzahlderKonflikte = 0;
             foreach (List<string> ltmp in arrayListejeAbteilung)
