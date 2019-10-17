@@ -4,7 +4,6 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using Windows.Storage;
 using Windows.UI;
@@ -73,7 +72,7 @@ namespace App1
                     output = sheet.GetRow(Int32.Parse(CellID.Substring(1)) - 1).GetCell(7).ToString();
                     break;
                 default:
-                    Debug.WriteLine("Unreacheable State in CellLookup from" + CellID + "[Import.cs]");
+                    //Debug.WriteLine("Unreacheable State in CellLookup from" + CellID + "[Import.cs]");
                     output = "Unreacheable State in CellLookup from" + CellID + "[Import.cs]";
                     break;
             }

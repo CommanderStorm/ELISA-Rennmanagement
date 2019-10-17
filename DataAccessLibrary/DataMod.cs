@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace DataAccessLibrary
 {
@@ -17,7 +16,7 @@ namespace DataAccessLibrary
                 "UPDATE Boote "
                 + "SET '" + zeilenName + "' = '" + updateWert.ToString()
                 + "' WHERE BootsID = '" + BootsID.ToString() + "';";
-            Debug.WriteLine(UpdateOneBoatData);
+            //Debug.WriteLine(UpdateOneBoatData);
             using (SqliteConnection db =
                 new SqliteConnection(sqliteConnectionString))
             {
@@ -54,7 +53,7 @@ namespace DataAccessLibrary
             string UpdateOneBoatData = "UPDATE Boote "
                 + "SET '" + zeilenName + "' = '" + updateWert.ToString()
                 + "' WHERE BootsID = '" + BootsID.ToString() + "';";
-            Debug.WriteLine(UpdateOneBoatData);
+            //Debug.WriteLine(UpdateOneBoatData);
             using (SqliteConnection db =
                 new SqliteConnection(sqliteConnectionString))
             {
@@ -106,7 +105,7 @@ namespace DataAccessLibrary
             + "(SELECT RennID, AthID FROM tmp "
             + "GROUP BY RennID, AthID "
             + "HAVING count(*) > 1 ORDER by AthID)";
-            Debug.WriteLine(GetTierOneKollisionsSQLString);
+            //Debug.WriteLine(GetTierOneKollisionsSQLString);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())

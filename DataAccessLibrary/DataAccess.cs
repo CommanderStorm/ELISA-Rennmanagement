@@ -254,9 +254,11 @@ namespace DataAccessLibrary
             string RennidWherecomand = "";
             foreach (string stmp in ltmp)
             {
-                RennidWherecomand += ", OR RennID = '" + stmp + "'";
+                RennidWherecomand += " OR RennID = '" + stmp + "'";
             }
-            RennidWherecomand = "WHERE " + RennidWherecomand.Substring(5) + " ";
+            Debug.WriteLine("Primitive: " + RennidWherecomand);
+            RennidWherecomand = "WHERE " + RennidWherecomand.Substring(4) + " ";
+            Debug.WriteLine("Advanced: " + RennidWherecomand);
             string GetAllVereineDataQuery = "WITH athletenliste('BootsID', 'RennID', 'AthID') as ( "
                 + "SELECT BootsID, RennID, SteuerlingID "
                 + "FROM Boote "
@@ -312,7 +314,7 @@ namespace DataAccessLibrary
 
                 + "SELECT AnzahlBootsdoppelbenutzungen+AnzahlAthletendoppelbenutzungen as 'Kollisionsanzahl' "
                 + "FROM athletencounter, bootscounter";
-            Debug.WriteLine(GetAllVereineDataQuery);
+            //Debug.WriteLine(GetAllVereineDataQuery);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())
@@ -322,6 +324,7 @@ namespace DataAccessLibrary
                     using (SqliteDataReader reader = cmd.ExecuteReader())
                     {
                         reader.Read();
+                        Debug.WriteLine("reader.GetInt32(0)" + reader.GetInt32(0));
                         return reader.GetInt32(0);
                     }
                 }
@@ -425,7 +428,7 @@ namespace DataAccessLibrary
                         + "', '" + Melderfax + "', '" + Bezahlt
                         + "', '" + _ZuZahlen + "', '" + Kommentare
                         + "'); ";
-                    Debug.WriteLine(insertCommand.CommandText);
+                    //Debug.WriteLine(insertCommand.CommandText);
                     insertCommand.ExecuteReader();
 
                     db.Close();
@@ -450,7 +453,7 @@ namespace DataAccessLibrary
                             + "Verein) "
 
                             + "VALUES('" + personenName + "', '" + personenVerein + "'); ";
-                        Debug.WriteLine(insertCommand.CommandText);
+                        //Debug.WriteLine(insertCommand.CommandText);
                         insertCommand.ExecuteReader();
 
                         db.Close();
@@ -519,7 +522,7 @@ namespace DataAccessLibrary
         {
             Rennen ctest = new Rennen();
             string RennenLookuptable_Query = "SELECT RennNr, BootsTyp, Bezeichnung, Meldegeld FROM RennenLookuptable where RennNr = '" + rennnr.ToLower() + "';";
-            Debug.WriteLine(RennenLookuptable_Query);
+            //Debug.WriteLine(RennenLookuptable_Query);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())
@@ -669,7 +672,7 @@ namespace DataAccessLibrary
                 {
                     cmd.CommandText = GetAllBoatDataQuery;
                     conn.Open();
-                    Debug.WriteLine(GetAllBoatDataQuery);
+                    //Debug.WriteLine(GetAllBoatDataQuery);
                     using (SqliteDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -945,7 +948,7 @@ namespace DataAccessLibrary
                         + "sum(bezahlt) as bisherGesammtBezahlt, sum(zuZahlen) as gesammtZuZahlen, "
                         + "sum(bezahlt) - sum(zuZahlen) as total FROM Boote GROUP BY GesammtVerein order by count(GesammtVerein) DESC, GesammtVerein ASC";
             var vereine = new ObservableCollection<Verein>();
-            Debug.WriteLine(GetAllVereineDataQuery);
+            //Debug.WriteLine(GetAllVereineDataQuery);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())
@@ -990,7 +993,7 @@ namespace DataAccessLibrary
             {
                 GetAllVereineDataQuery += " WHERE sum(zuZahlen) > sum(bezahlt);";
             }
-            Debug.WriteLine(GetAllVereineDataQuery);
+            //Debug.WriteLine(GetAllVereineDataQuery);
             var vereine = new ObservableCollection<Verein>();
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
@@ -1030,7 +1033,7 @@ namespace DataAccessLibrary
                 + "FROM Boote "
                 + "JOIN RennenLookuptable ON RennenLookuptable.RennNr = Boote.RennID "
                 + "GROUP BY Boote.RennID order by Boote.Abteilung ASC, RennenLookuptable.ROWID ASC;";
-            Debug.WriteLine(GetAllVereineDataQuery);
+            //Debug.WriteLine(GetAllVereineDataQuery);
             using (SqliteConnection conn = new SqliteConnection(sqliteConnectionString))
             {
                 using (SqliteCommand cmd = conn.CreateCommand())

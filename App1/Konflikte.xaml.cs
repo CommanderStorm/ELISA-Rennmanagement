@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using Windows.UI.Xaml.Controls;
 
 namespace App1
@@ -24,7 +24,7 @@ namespace App1
             konfliktRennID = _konfliktRennID.ToArray();
         }
 
-        private async void Go_ClickAsync(object _, Windows.UI.Xaml.RoutedEventArgs _1)
+        private void Go_ClickAsync(object _, Windows.UI.Xaml.RoutedEventArgs _1)
         {
             ObservableCollection<Rennen> rennKonflikte = DataAccess.GetRennKonflikte();
             //rule out an empty database
@@ -56,23 +56,26 @@ namespace App1
                 }
                 else
                 {
-                    await GenerateTheBestCombination(rennKonflikte);
+                    //await GenerateTheBestCombination(rennKonflikte);
+                    GenerateTheBestCombination(rennKonflikte);
                 }
             }
         }
 
-        private async Task GenerateTheBestCombination(ObservableCollection<Rennen> rennKonflikte)
+        private void GenerateTheBestCombination(ObservableCollection<Rennen> rennKonflikte)
         {
-            List<Task<int[]>> tasks = new List<Task<int[]>>();
+            List<int[]> results = new List<int[]>();
+            //List<Task<int[]>> tasks = new List<Task<int[]>>();
             for (int index0 = 1; index0 <= maxValue; index0++)
             {
                 for (int index1 = 1; index1 <= maxValue; index1++)
                 {
                     // generating the optimum array in mulitple Threads
-                    tasks.Add(Task.Run(() => topGuess(index0, index1, rennKonflikte.Count)));
+                    //tasks.Add(Task.Run(() => topGuess(index0, index1, rennKonflikte.Count)));
+                    results.Add(topGuess(index0, index1, rennKonflikte.Count));
                 }
             }
-            int[][] results = await Task.WhenAll(tasks);
+            //int[][] results = await Task.WhenAll(tasks);
 
             //eval all the top Dogs
             int[] bestGuess = results[0];
@@ -106,7 +109,7 @@ namespace App1
             }
             int topGuessCost = EvalFunctionfromArray(topGuess);
             increment = topGuess;
-         
+
             //while Loop
             while (increment[1] == index1)
             {
@@ -119,7 +122,7 @@ namespace App1
                     topGuessCost = EvalFunctionfromArray(increment);
                 }
             }
-            
+
             //Diagnostics
             return topGuess;
         }
@@ -129,13 +132,13 @@ namespace App1
             for (int i = increment.Length - 1; i >= 0; i--)
             {
                 increment[i] += 1;
-                if (increment[i] >= maxValue)
+                if (increment[i] > maxValue)
                 {
                     increment[i] = 1;
                 }
                 else
                 {
-                    break; 
+                    break;
                     // This will break out of the for - loop and stop processing increments as everything just fit nicely and we don't have to update more previous increments
                 }
             }
@@ -144,15 +147,39 @@ namespace App1
 
         private int EvalFunctionfromArray(int[] x)
         {
+            Debug.Write("\n\nx = [");
+            foreach (int tmp in x)
+            {
+                Debug.Write(tmp.ToString());
+            }
+            Debug.Write("]\n");
+
             List<string>[] arrayListejeAbteilung = new List<string>[maxValue];
+            for (int i = 0; i < maxValue; i++)
+            {
+                arrayListejeAbteilung[i] = new List<string>();
+            }
             for (int i = 0; i < x.Length; i++)
             {
-                arrayListejeAbteilung[x[i]].Add(konfliktRennID[i]);
+                arrayListejeAbteilung[x[i] - 1].Add(konfliktRennID[i].ToString());
+            }
+            Debug.Write("arrayListejeAbteilung:");
+            foreach (List<string> tmp1 in arrayListejeAbteilung)
+            {
+                Debug.Write("\tListe = [");
+                foreach (string s in tmp1)
+                {
+                    Debug.Write(s);
+                }
+                Debug.Write("]\n");
             }
             int anzahlderKonflikte = 0;
             foreach (List<string> ltmp in arrayListejeAbteilung)
             {
-                anzahlderKonflikte += DataAccess.AnzahlderKonflikte(ltmp);
+                if (ltmp.Count > 0)
+                {
+                    anzahlderKonflikte += DataAccess.AnzahlderKonflikte(ltmp);
+                }
             }
             /*
             int rennbooteInLauf = 0;
