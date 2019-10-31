@@ -120,6 +120,14 @@ namespace App1
                 {
                     topGuess = increment;
                     topGuessCost = EvalFunctionfromArray(increment);
+
+                    string debug = increment[0] + "-" + increment[1] + ": ";
+                    foreach (int tmp in topGuess)
+                    {
+                        debug+=tmp.ToString();
+                    }
+                    debug +=" [Cost " + topGuessCost + "]";
+                    Debug.WriteLine(debug);
                 }
             }
 
@@ -147,12 +155,12 @@ namespace App1
 
         private int EvalFunctionfromArray(int[] x)
         {
-            Debug.Write("\n\nx = [");
+            /*Debug.Write("\n\nx = [");
             foreach (int tmp in x)
             {
                 Debug.Write(tmp.ToString());
             }
-            Debug.Write("]\n");
+            Debug.Write("]\n");*/
 
             List<string>[] arrayListejeAbteilung = new List<string>[maxValue];
             for (int i = 0; i < maxValue; i++)
@@ -163,7 +171,7 @@ namespace App1
             {
                 arrayListejeAbteilung[x[i] - 1].Add(konfliktRennID[i].ToString());
             }
-            Debug.Write("arrayListejeAbteilung:");
+            /*Debug.Write("arrayListejeAbteilung:");
             foreach (List<string> tmp1 in arrayListejeAbteilung)
             {
                 Debug.Write("\tListe = [");
@@ -172,7 +180,7 @@ namespace App1
                     Debug.Write(s);
                 }
                 Debug.Write("]\n");
-            }
+            }*/
             int anzahlderKonflikte = 0;
             foreach (List<string> ltmp in arrayListejeAbteilung)
             {

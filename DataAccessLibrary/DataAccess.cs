@@ -256,9 +256,7 @@ namespace DataAccessLibrary
             {
                 RennidWherecomand += " OR RennID = '" + stmp + "'";
             }
-            Debug.WriteLine("Primitive: " + RennidWherecomand);
             RennidWherecomand = "WHERE " + RennidWherecomand.Substring(4) + " ";
-            Debug.WriteLine("Advanced: " + RennidWherecomand);
             string GetAllVereineDataQuery = "WITH athletenliste('BootsID', 'RennID', 'AthID') as ( "
                 + "SELECT BootsID, RennID, SteuerlingID "
                 + "FROM Boote "
@@ -324,7 +322,6 @@ namespace DataAccessLibrary
                     using (SqliteDataReader reader = cmd.ExecuteReader())
                     {
                         reader.Read();
-                        Debug.WriteLine("reader.GetInt32(0)" + reader.GetInt32(0));
                         return reader.GetInt32(0);
                     }
                 }
