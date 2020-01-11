@@ -1,9 +1,8 @@
 ﻿using DataAccessLibrary;
-using Extreme.Mathematics.Optimization;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
-using System;
 
 namespace App1
 {

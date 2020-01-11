@@ -252,11 +252,11 @@ namespace DataAccessLibrary
         public static int AnzahlderKonflikte(List<string> ltmp)
         {
             string RennidWherecomand = "";
-            foreach(string stmp in ltmp)
+            foreach (string stmp in ltmp)
             {
-                RennidWherecomand+= ", OR RennID = '" + stmp + "'";
+                RennidWherecomand += ", OR RennID = '" + stmp + "'";
             }
-            RennidWherecomand = "WHERE " + RennidWherecomand.Substring(5)+" ";
+            RennidWherecomand = "WHERE " + RennidWherecomand.Substring(5) + " ";
             string GetAllVereineDataQuery = "WITH athletenliste('BootsID', 'RennID', 'AthID') as ( "
                 + "SELECT BootsID, RennID, SteuerlingID "
                 + "FROM Boote "
