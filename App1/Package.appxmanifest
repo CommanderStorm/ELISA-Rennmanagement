@@ -32,10 +32,10 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="App1.App">
       <uap:VisualElements
-        DisplayName="Roseninsel8er"
+        DisplayName="ELISA"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\SquareLogo.png"
-        Description="App1"
+        Description="ELISA is the next gen of Reattasoftware. Rubust and subtle."
         BackgroundColor="#ffffff">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png">
           <uap:ShowNameOnTiles>
