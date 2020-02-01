@@ -1,4 +1,4 @@
-# Roseninselachter-Rennmanagement
+# ELISA-Rennmanagement
 This is the Prototype for a [Roseninselachter](https://www.mrsv-bayern.de/rudern-roseninselachter/)-Racemanegement-Software. It is designed for this specific rowing-event and is usecase-specific.
 
 
